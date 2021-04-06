@@ -7,19 +7,34 @@ package hu.unideb.inf;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author polon
  */
+@Entity
 public class Location {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     private String name;
+
     private double latitude;
+
     private double longitude;
+
     private double altitude;
+
+    @OneToMany(targetEntity = Tag.class)
     private Set<Tag> tags;
+
     private String description;
 
     /**

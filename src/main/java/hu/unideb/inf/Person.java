@@ -7,16 +7,33 @@ package hu.unideb.inf;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author polon
  */
+@Entity
 public class Person {
 
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "birthOfYear")
     private int birthOfYear;
+
+    @Column(name = "locations")
+    @OneToMany(targetEntity = Location.class)
     private Set<Location> locations;
 
     /**
