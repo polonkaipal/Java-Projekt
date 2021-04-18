@@ -70,7 +70,7 @@ public class FXMLController implements Initializable {
     private MenuItem deleteBtn;
     @FXML
     void delete(ActionEvent event) {
-        dateOfBirthOutput.setText("hello");
+        dateOfBirthOutput.setText("deleted");
     }
     
     @FXML
@@ -80,6 +80,7 @@ public class FXMLController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonAddSceneFXML.fxml"));
         Parent root1 = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
+        stage.setTitle("Add person");
         stage.setScene(new Scene(root1));  
         stage.show();
         } catch(Exception e)
@@ -169,6 +170,6 @@ public class FXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         //példa
-        personNameList.getItems().addAll("hello", "baba", "sas");   
+        personNameList.getItems().addAll("Pali", "Gergő", "Judit");   
     }    
 }
