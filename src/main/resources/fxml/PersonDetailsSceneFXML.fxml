@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="265.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="265.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.PersonDetailsSceneFXMLController">
    <children>
       <GridPane layoutX="80.0" layoutY="74.0" prefHeight="169.0" prefWidth="200.0">
         <columnConstraints>
@@ -21,11 +21,11 @@
         </rowConstraints>
          <children>
             <Label fx:id="detailsOut11" prefHeight="18.0" prefWidth="110.0" text="..." />
-            <Label fx:id="detailsOut12" prefHeight="18.0" prefWidth="122.0" text="..." GridPane.columnIndex="1" />
             <Label fx:id="detailsOut21" prefHeight="18.0" prefWidth="125.0" text="..." GridPane.rowIndex="1" />
             <Label fx:id="detailsOut22" prefHeight="18.0" prefWidth="116.0" text="..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="detailsOut31" prefHeight="18.0" prefWidth="120.0" text="..." GridPane.rowIndex="2" />
             <Label fx:id="detailsOut32" prefHeight="18.0" prefWidth="149.0" text="..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="detailsOut12" prefHeight="18.0" prefWidth="112.0" text="..." GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <Label fx:id="detailsTitle" layoutX="132.0" layoutY="14.0" text="Details:">

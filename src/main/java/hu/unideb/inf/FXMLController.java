@@ -1,6 +1,9 @@
 package hu.unideb.inf;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.MenuItem;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -14,9 +17,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-
-
 
 public class FXMLController implements Initializable {
     
@@ -26,7 +26,7 @@ public class FXMLController implements Initializable {
     private MenuItem addPersonMenuItem;
 
     @FXML
-    private ListView personNameList;
+    private ListView<String> personNameList;
 
     @FXML
     private ImageView personImage;
@@ -60,7 +60,7 @@ public class FXMLController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(new Scene(root1));  
         stage.show();
-        } catch(Exception e)
+        } catch(IOException e)
         {
             System.out.println("Can't load");
         }
@@ -70,105 +70,41 @@ public class FXMLController implements Initializable {
     private MenuItem deleteBtn;
     @FXML
     void delete(ActionEvent event) {
-        dateOfBirthOutput.setText("hello");
+        //dateOfBirthOutput.setText("hello");
     }
     
     @FXML
     void addPerson(ActionEvent event) {
         try
         {
+        //personNameList.getItems().add("gyagya");
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonAddSceneFXML.fxml"));
-        Parent root1 = (Parent) fxmlLoader.load();
+        Parent root1 = fxmlLoader.load();
+        PersonAddSceneFXMLController addPersonController = fxmlLoader.getController();
         Stage stage = new Stage();
-        stage.setScene(new Scene(root1));  
+        stage.setScene(new Scene(root1)); 
+        stage.setTitle("Person Adder");
         stage.show();
-        } catch(Exception e)
+        } catch(IOException e)
         {
             System.out.println("Can't load");
         }   
     }
-    
-    
-    
-    
-    //Add person FXML items
-    
-    
-    
-    
     @FXML
-    private Button addPersonSaveBtn;
+    void PersonAdder(String name) {
+        
+        personNameList.getItems().add(name);
+        System.out.println(name);
+        System.out.println(personNameList.getItems());
+    }
     
-    @FXML
-    private TextField dateOfBirthInput;
-
-    @FXML
-    private TextField favoritePlaceInput;
-
-    @FXML
-    private TextField longitudeInput;
-
-    @FXML
-    private TextField latitudeInput;
-
-    @FXML
-    private TextField detailsIn11;
-
-    @FXML
-    private TextField detailsIn12;
-
-    @FXML
-    private TextField detailsIn21;
-
-    @FXML
-    private TextField detailsIn22;
-
-    @FXML
-    private TextField detailsIn31;
-
-    @FXML
-    private TextField detailsIn32;
-
-    @FXML
-    private TextField nameInput;
-
-    
-    
-    
-    //Person Details FXML items
-    
-    
-    
-    
-    @FXML
-    private Label detailsOut11;
-
-    @FXML
-    private Label detailsOut12;
-
-    @FXML
-    private Label detailsOut21;
-
-    @FXML
-    private Label detailsOut22;
-
-    @FXML
-    private Label detailsOut31;
-
-    @FXML
-    private Label detailsOut32;
-    
-    @FXML
-    private Label detailsTitle;
-
-    
-    
-    
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         //példa
-        personNameList.getItems().addAll("hello", "baba", "sas");   
+        List<Person> szemelyek = new ArrayList<>();
+        szemelyek.add(new Person());
+        szemelyek.get(0).setName("gyuri");
+    
+        personNameList.getItems().add(szemelyek.get(0).getName());   
     }    
 }
