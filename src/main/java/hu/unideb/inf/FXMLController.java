@@ -17,11 +17,15 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 
 public class FXMLController implements Initializable {
-    
+
     //Main Scene FXML items
-    
+    private boolean stageLoadedAddPerson = false;
+    private boolean stageLoadedPersonDetail = false;
+    private List<Person> szemelyek = new ArrayList<>();
+
     @FXML
     private MenuItem addPersonMenuItem;
 
@@ -30,7 +34,7 @@ public class FXMLController implements Initializable {
 
     @FXML
     private ImageView personImage;
-    
+
     @FXML
     private Label dateOfBirthOutput;
 
@@ -42,7 +46,7 @@ public class FXMLController implements Initializable {
 
     @FXML
     private Label latitudeOutput;
-    
+
     @FXML
     private Button detailsViewBtn;
 
@@ -50,61 +54,79 @@ public class FXMLController implements Initializable {
     void addPersonToList(ActionEvent event) {
 
     }
-    
+
     @FXML
     void detailsViewBtnClick(ActionEvent event) {
-        try
-        {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonDetailsSceneFXML.fxml"));
-        Parent root1 = (Parent) fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root1));  
-        stage.show();
-        } catch(IOException e)
-        {
-            System.out.println("Can't load");
+        if (!stageLoadedPersonDetail) {
+            try {
+                stageLoadedPersonDetail = true;
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonDetailsSceneFXML.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+                PersonDetailsSceneFXMLController personDetailsController = fxmlLoader.getController();
+                Datas.personDetailsController = personDetailsController;
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root1));
+                stage.show();
+
+            } catch (IOException e) {
+                System.out.println("Can't load");
+            }
+        } else {
+            System.out.println("The Person Details window has been already opened!");
         }
+
     }
-    
+
     @FXML
     private MenuItem deleteBtn;
+
     @FXML
     void delete(ActionEvent event) {
-        //dateOfBirthOutput.setText("hello");
+        //dateOfBirthOutput.setText(Datas.name);
     }
-    
+
     @FXML
     void addPerson(ActionEvent event) {
-        try
-        {
-        //personNameList.getItems().add("gyagya");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonAddSceneFXML.fxml"));
-        Parent root1 = fxmlLoader.load();
-        PersonAddSceneFXMLController addPersonController = fxmlLoader.getController();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root1)); 
-        stage.setTitle("Person Adder");
-        stage.show();
-        } catch(IOException e)
-        {
-            System.out.println("Can't load");
-        }   
+        if (!stageLoadedAddPerson) {
+            try {
+                stageLoadedAddPerson = true;
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonAddSceneFXML.fxml"));
+                Parent root1 = fxmlLoader.load();
+                PersonAddSceneFXMLController addPersonController = fxmlLoader.getController();
+                Datas.addPersonControllers = addPersonController;
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root1));
+                stage.setTitle("Person Adder");
+                stage.show();
+            } catch (IOException e) {
+                System.out.println("Can't load");
+            }
+        } else {
+            System.out.println("Az oldal már be van töltve");
+        }
+
     }
+
     @FXML
-    void PersonAdder(String name) {
-        
+    void PersonAdder(String name) { 
         personNameList.getItems().add(name);
-        System.out.println(name);
-        System.out.println(personNameList.getItems());
+        stageLoadedAddPerson = false;
     }
     
+    @FXML
+    void listViewHandleClick(MouseEvent event) {
+        String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
+        System.out.println("clicked on "+ chosenPerson);
+      
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         //példa
-        List<Person> szemelyek = new ArrayList<>();
+        
         szemelyek.add(new Person());
         szemelyek.get(0).setName("gyuri");
-    
-        personNameList.getItems().add(szemelyek.get(0).getName());   
-    }    
+        personNameList.getItems().add(szemelyek.get(0).getName());
+    }
 }

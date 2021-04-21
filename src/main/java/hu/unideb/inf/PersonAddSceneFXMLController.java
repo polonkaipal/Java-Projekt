@@ -6,22 +6,28 @@
 package hu.unideb.inf;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  *
  * @author Szondi
  */
-public class PersonAddSceneFXMLController{
+public class PersonAddSceneFXMLController implements Initializable{
     @FXML
     private TextField dateOfBirthInput;
+    
+    
 
     @FXML
     private TextField favoritePlaceInput;
@@ -70,16 +76,24 @@ public class PersonAddSceneFXMLController{
            errorText.setText("Error: Fill in the obligatory inputs!");
         }
         else
-        {
-            
+        {  
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
-                FXMLController controller = fxmlLoader.getController();
+                FXMLController controller = Datas.fxmlController;
                 controller.PersonAdder(nameInput.getText());
+                Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
+                stage.close();
             } catch (IOException e) {
                 System.out.println(e);
             }
         }
+    }
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        favoritePlaceInput.setText("Rome");
+        favoritePlaceInput.setEditable(false);
+        System.out.println("Lefut");
     }
 }

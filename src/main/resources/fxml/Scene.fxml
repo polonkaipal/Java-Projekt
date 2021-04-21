@@ -39,7 +39,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <ListView fx:id="personNameList" layoutX="24.0" layoutY="-8.0" onEditCommit="#addPersonToList" prefHeight="184.0" prefWidth="570.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <ListView fx:id="personNameList" layoutX="24.0" layoutY="-8.0" onEditCommit="#addPersonToList" onMouseClicked="#listViewHandleClick" prefHeight="184.0" prefWidth="570.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
