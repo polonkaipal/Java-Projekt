@@ -5,8 +5,8 @@
  */
 package hu.unideb.inf;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,7 +33,7 @@ public class Location {
     private double altitude;
 
     @OneToMany(targetEntity = Tag.class)
-    private Set<Tag> tags;
+    private List<Tag> tags;
 
     private String description;
 
@@ -110,14 +110,14 @@ public class Location {
     /**
      * @return the tags
      */
-    public Set<Tag> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
     /**
      * @param tags the tags to set
      */
-    public void setTags(Set<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
@@ -144,7 +144,7 @@ public class Location {
     }
 
     public Location() {
-        tags = new HashSet<>();
+        tags = new ArrayList<>();
     }
 
 }
