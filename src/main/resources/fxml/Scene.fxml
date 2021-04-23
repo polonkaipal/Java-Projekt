@@ -25,7 +25,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem fx:id="deleteBtn" mnemonicParsing="false" onAction="#delete" text="Delete" />
+              <MenuItem fx:id="deleteBtn" mnemonicParsing="false" onAction="#deletePerson" text="Delete" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -39,7 +39,34 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <ListView fx:id="personNameList" layoutX="24.0" layoutY="-8.0" onEditCommit="#addPersonToList" onMouseClicked="#listViewHandleClick" prefHeight="184.0" prefWidth="570.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <SplitPane dividerPositions="0.7566740823136819" layoutX="260.0" layoutY="44.0" prefHeight="262.4" prefWidth="720.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <ListView fx:id="personNameList" layoutX="210.0" layoutY="41.0" onMouseClicked="#personListViewHandleClick" prefHeight="261.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <ListView fx:id="locationNameList" layoutX="78.0" layoutY="24.0" onMouseClicked="#locationListViewHandleClick" prefHeight="260.8" prefWidth="355.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <MenuBar layoutX="17.0" layoutY="1.0" prefHeight="30.0" prefWidth="186.0" AnchorPane.bottomAnchor="231.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <menus>
+                                  <Menu mnemonicParsing="false" text="File">
+                                    <items>
+                                      <MenuItem fx:id="addLocation" mnemonicParsing="false" onAction="#addLocationClicked" text="Add Location" />
+                                    </items>
+                                  </Menu>
+                                  <Menu mnemonicParsing="false" text="Edit">
+                                    <items>
+                                      <MenuItem fx:id="deleteLocation" mnemonicParsing="false" onAction="#deleteLocationClicked" text="Delete" />
+                                    </items>
+                                  </Menu>
+                                </menus>
+                              </MenuBar>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -116,7 +143,7 @@
                            </children></AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="237.0" prefWidth="321.0">
                            <children>
-                              <ImageView fx:id="personImage" fitHeight="150.0" fitWidth="200.0" layoutX="41.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="personImage" fitHeight="232.0" fitWidth="306.0" layoutX="26.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

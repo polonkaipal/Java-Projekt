@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="370.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.PersonAddSceneFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="456.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.PersonAddSceneFXMLController">
    <children>
       <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <menus>
@@ -55,7 +57,6 @@
                         <Label text="Date of Birth:" GridPane.rowIndex="1" />
                         <Label text="Favorite Place:" GridPane.rowIndex="2" />
                         <Label prefHeight="18.0" prefWidth="134.0" text="Longitude:" GridPane.rowIndex="3" />
-                        <TextField fx:id="dateOfBirthInput" promptText="(e.g.)1974.07.22." GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="favoritePlaceInput" promptText="(e.g)Rome" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="longitudeInput" promptText="(e.g.)12.485212" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="latitudeInput" promptText="(e.g.)41.890010" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -82,22 +83,32 @@
                         </GridPane>
                         <Label text="Name" />
                         <TextField fx:id="nameInput" promptText="(e.g.)John Smith" GridPane.columnIndex="1" />
+                        <DatePicker fx:id="dateOfBirthInput" prefHeight="26.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitPane dividerPositions="0.7807328605200946" layoutX="64.0" layoutY="70.0" orientation="VERTICAL" prefHeight="340.0" prefWidth="288.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.8566037735849056" layoutX="64.0" layoutY="70.0" orientation="VERTICAL" prefHeight="340.0" prefWidth="288.8" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="241.0" prefWidth="287.0">
                            <children>
-                              <SplitPane dividerPositions="0.8546153846153846" layoutX="64.0" layoutY="31.0" orientation="VERTICAL" prefHeight="261.6" prefWidth="287.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <SplitPane dividerPositions="0.8921568627450981" layoutX="64.0" layoutY="31.0" orientation="VERTICAL" prefHeight="261.6" prefWidth="287.2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <items>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="282.0" prefWidth="286.0">
+                                       <children>
+                                          <Button fx:id="uploadImagebtn" layoutX="83.0" layoutY="268.0" mnemonicParsing="false" onAction="#uploadImageBtnClicked" prefHeight="35.0" prefWidth="118.0" text="Upload Image" />
+                                          <ImageView fx:id="addPersonImage" fitHeight="214.0" fitWidth="247.0" layoutX="19.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Label fx:id="fileSelected" alignment="CENTER" layoutX="-1.0" layoutY="5.0" prefHeight="26.0" prefWidth="286.0" textFill="#d43f3f">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children></AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>
-                                          <Label fx:id="errorText" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" prefHeight="35.0" prefWidth="286.0" textAlignment="CENTER" textFill="#e71919">
+                                          <Label fx:id="errorText" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" prefHeight="43.0" prefWidth="286.0" textAlignment="CENTER" textFill="#e71919">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -109,7 +120,7 @@
                            </children></AnchorPane>
                       <AnchorPane>
                            <children>
-                              <Button fx:id="addPersonSavebtn" layoutX="96.0" layoutY="11.0" mnemonicParsing="false" onAction="#SaddPersonSavebtn" prefHeight="43.0" prefWidth="95.0" text="Save" />
+                              <Button fx:id="addPersonSavebtn" layoutX="96.0" layoutY="7.0" mnemonicParsing="false" onAction="#addPersonSavebtnPressed" prefHeight="43.0" prefWidth="95.0" text="Save" />
                            </children>
                         </AnchorPane>
                     </items>
