@@ -5,8 +5,8 @@
  */
 package hu.unideb.inf;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +34,7 @@ public class Person {
 
     @Column(name = "locations")
     @OneToMany(targetEntity = Location.class)
-    private Set<Location> locations;
+    private List<Location> locations;
 
     /**
      * @return the id
@@ -81,14 +81,14 @@ public class Person {
     /**
      * @return the locations
      */
-    public Set<Location> getLocations() {
+    public List<Location> getLocations() {
         return locations;
     }
 
     /**
      * @param locations the locations to set
      */
-    public void setLocations(Set<Location> locations) {
+    public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
 
@@ -101,7 +101,7 @@ public class Person {
     }
 
     public Person() {
-        locations = new HashSet<>();
+        locations = new ArrayList<>();
     }
 
 }
