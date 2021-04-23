@@ -104,4 +104,9 @@ public class Person {
         locations = new ArrayList<>();
     }
 
+    public Person(String name, int birthOfYear, List<Location> locations) {
+        this.name = name;
+        this.birthOfYear = birthOfYear;
+        this.locations = locations;
+    }
 }
