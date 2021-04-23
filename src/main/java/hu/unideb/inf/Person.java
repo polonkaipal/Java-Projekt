@@ -6,6 +6,7 @@
 package hu.unideb.inf;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,8 +30,8 @@ public class Person {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "birthOfYear")
-    private int birthOfYear;
+    @Column(name = "dateOfBirth")
+    private Date dateOfBirth;
 
     @Column(name = "locations")
     @OneToMany(targetEntity = Location.class)
@@ -67,15 +68,15 @@ public class Person {
     /**
      * @return the birthOfYear
      */
-    public int getBirthOfYear() {
-        return birthOfYear;
+    public Date getBirthOfYear() {
+        return dateOfBirth;
     }
 
     /**
-     * @param birthOfYear the birthOfYear to set
+     * @param dateOfBirth the birthOfYear to set
      */
-    public void setBirthOfYear(int birthOfYear) {
-        this.birthOfYear = birthOfYear;
+    public void setBirthOfYear(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     /**
@@ -104,9 +105,9 @@ public class Person {
         locations = new ArrayList<>();
     }
 
-    public Person(String name, int birthOfYear, List<Location> locations) {
+    public Person(String name, Date dateOfBirth, List<Location> locations) {
         this.name = name;
-        this.birthOfYear = birthOfYear;
+        this.dateOfBirth = dateOfBirth;
         this.locations = locations;
     }
 }
