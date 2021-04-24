@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import javafx.scene.control.MenuItem;
 import java.util.ResourceBundle;
-import java.util.Set;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,8 +26,7 @@ import javafx.scene.input.MouseEvent;
 public class FXMLController implements Initializable {
 
     //Main Scene FXML items
-    private int personCreatedIndex = 0;
-    private boolean stageLoadedAddPerson = false;
+    private boolean stageLoadedAddPersonAndLocation = false;
     private boolean stageLoadedPersonDetail = false;
     private List<Person> persons = new ArrayList<>();
 
@@ -60,9 +59,14 @@ public class FXMLController implements Initializable {
 
     @FXML
     private Label latitudeOutput;
+    
+    @FXML
+    private Label altitudeOutput;
+    
 
     @FXML
     private Button detailsViewBtn;
+    
 
     @FXML
     void detailsViewBtnClick(ActionEvent event) {
@@ -73,7 +77,18 @@ public class FXMLController implements Initializable {
                 Parent root1 = (Parent) fxmlLoader.load();
                 PersonDetailsSceneFXMLController personDetailsController = fxmlLoader.getController();
                 Datas.personDetailsController = personDetailsController;
+                
+                //Az input átadása a Details controllernek
+                String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
+                String chosenLocation = locationNameList.getSelectionModel().getSelectedItem();
+                if (!locationNameList.getItems().isEmpty() && chosenLocation!=null && chosenPerson!=null) {
+                int chosenLocationIndex = locationNameList.getSelectionModel().getSelectedIndex();
+                int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+                personDetailsController.LoadDetails(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getDetails());
+                }
+                
                 Stage stage = new Stage();
+                stage.setTitle("Location Details");
                 stage.setScene(new Scene(root1));
 
                 stage.setOnCloseRequest((eventt) -> {
@@ -100,9 +115,9 @@ public class FXMLController implements Initializable {
 
     @FXML
     void addPerson(ActionEvent event) {
-        if (!stageLoadedAddPerson) {
+        if (!stageLoadedAddPersonAndLocation) {
             try {
-                stageLoadedAddPerson = true;
+                stageLoadedAddPersonAndLocation = true;
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonAddSceneFXML.fxml"));
                 Parent root1 = fxmlLoader.load();
                 PersonAddSceneFXMLController addPersonController = fxmlLoader.getController();
@@ -113,7 +128,7 @@ public class FXMLController implements Initializable {
 
                 //Person adder close handler
                 stage.setOnCloseRequest((eventt) -> {
-                    stageLoadedAddPerson = false;
+                    stageLoadedAddPersonAndLocation = false;
                 });
                 stage.show();
             } catch (IOException e) {
@@ -126,57 +141,105 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    void PersonAdder(String name, LocalDate date, String favouritePlace, double Longitude, double Latitude, String img) {
-        Set<Location> locations = new LinkedHashSet<>();
-        //locations.add(new Location());
-        //locations.get(0).setLongitude(Longitude);
-        //locations.get(0).setLatitude(Latitude);
-
-        persons.add(new Person());
-        persons.get(personCreatedIndex).setName(name);
-        //persons.get(personCreatedIndex).setBirthOfYear(age);
-        persons.get(personCreatedIndex).setLocations(locations);
-        persons.get(personCreatedIndex).setName(name);
-        System.out.println("a dátum "+date);
-        if (img != null) {
-            Image image = new Image(img);
-            personImage.setImage(image);
-        }
-
+    void PersonAdder(String name, LocalDate date, String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) {
+        ObservableList<String> locationsListNames = FXCollections.observableArrayList();
+        System.out.println(longitude);
+        locationsListNames.add(favoritePlace);
+        List<Location> locations = new ArrayList<>();
+        locations.add(new Location(favoritePlace, latitude, longitude, altitude, img, textArea));
+        persons.add(new Person(name, date, locations, locationsListNames));
+        
+        System.out.println("person"+ locationsListNames);
         personNameList.getItems().add(name);
-        personCreatedIndex++;
-        stageLoadedAddPerson = false;
+        stageLoadedAddPersonAndLocation = false;
+    }
+
+    @FXML
+    void LocationAdder(String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) {
+        Location location = new Location(favoritePlace, longitude, latitude, altitude, img, textArea);
+        
+        int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+        
+        persons.get(chosenPersonIndex).getLocations().add(location);
+        persons.get(chosenPersonIndex).getLocationListNames().add(favoritePlace);
+        
+        System.out.println("location"+ persons.get(chosenPersonIndex).getLocationListNames());
+        stageLoadedAddPersonAndLocation = false;
+    }
+    
+    @FXML
+    void DetailsAdder(int row, String description, String answer){
+        switch (row) {
+            case 1: ;
+                     break;
+            default: ;
+                     break;
+        }
+        
     }
 
     @FXML
     void personListViewHandleClick(MouseEvent event) {
         String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
+        
+        if (!personNameList.getItems().isEmpty() && chosenPerson!=null) {
+            int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+            dateOfBirthOutput.setText(persons.get(chosenPersonIndex).getBirthOfYear().toString());
+            
+            //Átírja a LocationListet az aktuális személy helyek listájára
+            locationNameList.setItems(persons.get(chosenPersonIndex).getLocationListNames());
+        }
+
         System.out.println("clicked on " + chosenPerson);
     }
 
     @FXML
     void locationListViewHandleClick(MouseEvent event) {
-        String chosenPerson = locationNameList.getSelectionModel().getSelectedItem();
-        System.out.println("clicked on " + chosenPerson);
+        String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
+        String chosenLocation = locationNameList.getSelectionModel().getSelectedItem();
+        
+        if (!locationNameList.getItems().isEmpty() && chosenLocation!=null && chosenPerson!=null) {
+            int chosenLocationIndex = locationNameList.getSelectionModel().getSelectedIndex();
+            int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+            
+            favoritePlaceOutput.setText(String.valueOf(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getName()));
+            latitudeOutput.setText(String.valueOf(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getLatitude()));
+            longitudeOutput.setText(String.valueOf(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getLongitude()));
+            altitudeOutput.setText(String.valueOf(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getAltitude()));
+            
+            String img = persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getImage();
+            if (img != null) {
+            Image image = new Image(img);
+            personImage.setImage(image);
+            
+            
+        }
+            
+        }
+        System.out.println("clicked on " + chosenLocation);
     }
 
     @FXML
     void addLocationClicked(ActionEvent event) {
-        if (!stageLoadedAddPerson) {
+        if ((!stageLoadedAddPersonAndLocation) & (!personNameList.getItems().isEmpty())& personNameList.getSelectionModel().getSelectedItem()!=null) {
             try {
-                stageLoadedAddPerson = true;
+                
+                stageLoadedAddPersonAndLocation = true;
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonAddSceneFXML.fxml"));
                 Parent root1 = fxmlLoader.load();
-                PersonAddSceneFXMLController addPersonController = fxmlLoader.getController();
-                Datas.addPersonControllers = addPersonController;
-
+                PersonAddSceneFXMLController addLocationController = fxmlLoader.getController();
+                Datas.addPersonControllers = addLocationController;
+                
+                int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+                
+                addLocationController.addJustLocation(persons.get(chosenPersonIndex).getName(), persons.get(chosenPersonIndex).getBirthOfYear());
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));
                 stage.setTitle("Person Adder");
 
                 //Person adder close handler
                 stage.setOnCloseRequest((eventt) -> {
-                    stageLoadedAddPerson = false;
+                    stageLoadedAddPersonAndLocation = false;
                 });
                 stage.show();
             } catch (IOException e) {
@@ -196,10 +259,5 @@ public class FXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        //példa
-        //szemelyek.add(new Person());
-        //szemelyek.get(0).setName("gyuri");
-        //personNameList.getItems().add(szemelyek.get(0).getName());
-        locationNameList.getItems().add("Rome");
     }
 }

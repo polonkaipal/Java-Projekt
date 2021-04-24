@@ -5,7 +5,9 @@
  */
 package hu.unideb.inf;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,8 +34,10 @@ public class Location {
 
     private double altitude;
 
+    private String img;
+
     @OneToMany(targetEntity = Tag.class)
-    private Set<Tag> tags;
+    private String details;
 
     private String description;
 
@@ -108,25 +112,31 @@ public class Location {
     }
 
     /**
+     * @return the image
+     */
+    public String getImage() {
+        return img;
+    }
+
+    /**
+     * @param img the image to set
+     */
+    public void setImage(String img) {
+        this.img = img;
+    }
+
+    /**
      * @return the tags
      */
-    public Set<Tag> getTags() {
-        return tags;
+    public String getDetails() {
+        return details;
     }
 
     /**
      * @param tags the tags to set
      */
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public void addTag(Tag tag) {
-        tags.add(tag);
-    }
-
-    public void removeTag(Tag tag) {
-        tags.remove(tag);
+    public void setDetails(String tags) {
+        this.details = details;
     }
 
     /**
@@ -143,8 +153,14 @@ public class Location {
         this.description = description;
     }
 
-    public Location() {
-        tags = new HashSet<>();
+    public Location(String name, Double latitude, Double longitude, Double altitude, String img, String details) {
+        
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+        this.img = img;
+        this.details = details;
     }
 
 }

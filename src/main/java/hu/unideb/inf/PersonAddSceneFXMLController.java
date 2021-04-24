@@ -9,9 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,18 +20,22 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javax.swing.JFileChooser;
 
 /**
  *
  * @author Szondi
  */
 public class PersonAddSceneFXMLController implements Initializable {
+
+    private boolean isJustLocation = false;
+    @FXML
+    private TextField altitudeInput;
 
     @FXML
     private DatePicker dateOfBirthInput;
@@ -50,19 +53,7 @@ public class PersonAddSceneFXMLController implements Initializable {
     private TextField detailsIn11;
 
     @FXML
-    private TextField detailsIn12;
-
-    @FXML
-    private TextField detailsIn21;
-
-    @FXML
-    private TextField detailsIn22;
-
-    @FXML
-    private TextField detailsIn31;
-
-    @FXML
-    private TextField detailsIn32;
+    private TextArea addPersonDetailsIn;
 
     @FXML
     private TextField nameInput;
@@ -80,6 +71,18 @@ public class PersonAddSceneFXMLController implements Initializable {
 
     @FXML
     private Label fileSelected;
+
+    @FXML
+    public void addJustLocation(String name, LocalDate date) {
+        System.out.println("lefut a location");
+        isJustLocation = true;
+        
+        nameInput.setText(name);
+        nameInput.setEditable(false);
+        
+        dateOfBirthInput.setValue(date);
+        dateOfBirthInput.setEditable(false);
+    }
 
     @FXML
     public void uploadImageBtnClicked(ActionEvent actionEvent) throws MalformedURLException {
@@ -107,31 +110,53 @@ public class PersonAddSceneFXMLController implements Initializable {
 
     @FXML
     void addPersonSavebtnPressed(ActionEvent event) {
-        errorText.setText("");
-        if (nameInput.getText() == null || nameInput.getText().trim().isEmpty()
-                || dateOfBirthInput.getValue() == null
-                || favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
-                || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
-                || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
-            errorText.setText("Error: Fill in the obligatory inputs!");
+        if (!isJustLocation) {
+            errorText.setText("");
+            if (nameInput.getText() == null || nameInput.getText().trim().isEmpty()
+                    || dateOfBirthInput.getValue() == null
+                    || favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
+                    || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
+                    || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
+                    || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()){
+                errorText.setText("Error: Fill in the obligatory inputs!");
+            } else {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+                    Parent root1 = (Parent) fxmlLoader.load();
+                    FXMLController controller = Datas.fxmlController;
+                    controller.PersonAdder( nameInput.getText(), dateOfBirthInput.getValue(), favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
+                    
+                    Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
+                    stage.close();
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
+            }
         } else {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
-                Parent root1 = (Parent) fxmlLoader.load();
-                FXMLController controller = Datas.fxmlController;
-                controller.PersonAdder(nameInput.getText(), dateOfBirthInput.getValue(), favoritePlaceInput.getText(), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), fileName);
-                Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
-                stage.close();
-            } catch (IOException e) {
-                System.out.println(e);
+            errorText.setText("");
+            if (favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
+                    || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
+                    || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
+                    || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
+                errorText.setText("Error: Fill in the obligatory inputs!");
+            } else {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+                    Parent root1 = (Parent) fxmlLoader.load();
+                    FXMLController controller = Datas.fxmlController;
+                    controller.LocationAdder( favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
+                    Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
+                    stage.close();
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
             }
         }
+
     }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        favoritePlaceInput.setText("Rome");
-        favoritePlaceInput.setEditable(false);
 
     }
 }

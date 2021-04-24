@@ -13,24 +13,25 @@ import javafx.scene.control.Label;
  * @author Szondi
  */
 public class PersonDetailsSceneFXMLController {
-     @FXML
-    private Label detailsOut11;
-
-    @FXML
-    private Label detailsOut21;
-
-    @FXML
-    private Label detailsOut22;
-
-    @FXML
-    private Label detailsOut31;
-
-    @FXML
-    private Label detailsOut32;
-
-    @FXML
-    private Label detailsOut12;
-
-    @FXML
+    
+    
+      @FXML
     private Label detailsTitle;
+
+    @FXML
+    private Label personDetailsOut;
+    
+    @FXML
+    void LoadDetails(String input)
+    {
+        if(input.isEmpty())
+        {
+            detailsTitle.setText("A felhasználó nem adott meg részleteket.");
+        }
+        else
+        {
+            personDetailsOut.setText(input);
+        }
+    }
+
 }

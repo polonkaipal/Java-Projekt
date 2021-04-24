@@ -5,8 +5,13 @@
  */
 package hu.unideb.inf;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import javafx.collections.ObservableList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,12 +34,16 @@ public class Person {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "birthOfYear")
-    private int birthOfYear;
+    @Column(name = "dateOfBirth")
+    private LocalDate dateOfBirth;
 
     @Column(name = "locations")
     @OneToMany(targetEntity = Location.class)
-    private Set<Location> locations;
+    private List<Location> locations;
+    
+    
+    
+    private ObservableList<String> names;
 
     /**
      * @return the id
@@ -67,28 +76,28 @@ public class Person {
     /**
      * @return the birthOfYear
      */
-    public int getBirthOfYear() {
-        return birthOfYear;
+    public LocalDate getBirthOfYear() {
+        return dateOfBirth;
     }
 
     /**
      * @param birthOfYear the birthOfYear to set
      */
-    public void setBirthOfYear(int birthOfYear) {
-        this.birthOfYear = birthOfYear;
+    public void setBirthOfYear(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     /**
      * @return the locations
      */
-    public Set<Location> getLocations() {
+    public List<Location> getLocations() {
         return locations;
     }
 
     /**
      * @param locations the locations to set
      */
-    public void setLocations(Set<Location> locations) {
+    public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
 
@@ -99,9 +108,27 @@ public class Person {
     public void removeLocation(Location location) {
         locations.remove(location);
     }
+    
+    /**
+     * @return the location list names
+     */
+    public ObservableList<String> getLocationListNames() {
+        return names;
+    }
 
-    public Person() {
-        locations = new HashSet<>();
+    /**
+     * @param locationListNames the locationListNames to set
+     */
+    public void setLocationListNames(ObservableList<String> names) {
+        this.names = names;
+    }
+
+    
+    public Person(String name, LocalDate dateOfBirth, List<Location> locations, ObservableList<String> names) {
+        this.names = names;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.locations = locations;
     }
 
 }
