@@ -5,10 +5,6 @@
  */
 package hu.unideb.inf;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -139,22 +135,8 @@ public class Location {
         this.details = details;
     }
 
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Location(String name, Double latitude, Double longitude, Double altitude, String img, String details) {
-        
+
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;

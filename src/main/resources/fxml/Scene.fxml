@@ -26,6 +26,7 @@
           <Menu mnemonicParsing="false" text="Edit">
             <items>
               <MenuItem fx:id="deleteBtn" mnemonicParsing="false" onAction="#deletePerson" text="Delete" />
+                  <MenuItem fx:id="editPerson" mnemonicParsing="false" onAction="#editPersonClicked" text="Edit Person" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -59,6 +60,7 @@
                                   <Menu mnemonicParsing="false" text="Edit">
                                     <items>
                                       <MenuItem fx:id="deleteLocation" mnemonicParsing="false" onAction="#deleteLocationClicked" text="Delete" />
+                                          <MenuItem fx:id="editLocation" mnemonicParsing="false" onAction="#editLocationClicked" text="Edit Location" />
                                     </items>
                                   </Menu>
                                 </menus>

@@ -33,7 +33,9 @@ import javafx.stage.Stage;
  */
 public class PersonAddSceneFXMLController implements Initializable {
 
-    private boolean isJustLocation = false;
+    //Ez az érték határozza meg, hogy bizonyos gombok megnyomásakor a personAdder controller mely folyamata fusson le
+    private int whichButtonPushed = 0;
+
     @FXML
     private TextField altitudeInput;
 
@@ -48,9 +50,6 @@ public class PersonAddSceneFXMLController implements Initializable {
 
     @FXML
     private TextField latitudeInput;
-
-    @FXML
-    private TextField detailsIn11;
 
     @FXML
     private TextArea addPersonDetailsIn;
@@ -73,13 +72,51 @@ public class PersonAddSceneFXMLController implements Initializable {
     private Label fileSelected;
 
     @FXML
-    public void addJustLocation(String name, LocalDate date) {
-        System.out.println("lefut a location");
-        isJustLocation = true;
-        
+    public void editPerson(String name, LocalDate date) {
+        whichButtonPushed = 2;
+        nameInput.setText(name);
+        dateOfBirthInput.setValue(date);
+        favoritePlaceInput.setVisible(false);
+        latitudeInput.setVisible(false);
+        longitudeInput.setVisible(false);
+        altitudeInput.setVisible(false);
+        addPersonDetailsIn.setVisible(false);
+        uploadImagebtn.setVisible(false);
+    }
+
+    @FXML
+    public void editLocation(String name, LocalDate date, String favoritePlace, double latitude, double longitude, double altitude, String img, String description) {
+        whichButtonPushed = 3;
         nameInput.setText(name);
         nameInput.setEditable(false);
-        
+        dateOfBirthInput.setValue(date);
+        dateOfBirthInput.setEditable(false);
+
+        favoritePlaceInput.setText(favoritePlace);
+        latitudeInput.setText(String.valueOf(latitude));
+        longitudeInput.setText(String.valueOf(longitude));
+        altitudeInput.setText(String.valueOf(altitude));
+        addPersonDetailsIn.setText(description);
+        if (!img.isEmpty()) {
+            fileName = img;
+            Image image = new Image(img);
+            addPersonImage.setImage(image);
+        } else {
+            fileName = img;
+            addPersonImage.setImage(null);
+        }
+        System.out.println("IMAGE" + img.toString());
+
+    }
+
+    @FXML
+    public void addJustLocation(String name, LocalDate date) {
+        System.out.println("lefut a location");
+        whichButtonPushed = 1;
+
+        nameInput.setText(name);
+        nameInput.setEditable(false);
+
         dateOfBirthInput.setValue(date);
         dateOfBirthInput.setEditable(false);
     }
@@ -110,49 +147,100 @@ public class PersonAddSceneFXMLController implements Initializable {
 
     @FXML
     void addPersonSavebtnPressed(ActionEvent event) {
-        if (!isJustLocation) {
-            errorText.setText("");
-            if (nameInput.getText() == null || nameInput.getText().trim().isEmpty()
-                    || dateOfBirthInput.getValue() == null
-                    || favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
-                    || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
-                    || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
-                    || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()){
-                errorText.setText("Error: Fill in the obligatory inputs!");
-            } else {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
-                    Parent root1 = (Parent) fxmlLoader.load();
-                    FXMLController controller = Datas.fxmlController;
-                    controller.PersonAdder( nameInput.getText(), dateOfBirthInput.getValue(), favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
-                    
-                    Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
-                    stage.close();
-                } catch (IOException e) {
-                    System.out.println(e);
-                }
-            }
-        } else {
-            errorText.setText("");
-            if (favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
-                    || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
-                    || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
-                    || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
-                errorText.setText("Error: Fill in the obligatory inputs!");
-            } else {
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
-                    Parent root1 = (Parent) fxmlLoader.load();
-                    FXMLController controller = Datas.fxmlController;
-                    controller.LocationAdder( favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
-                    Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
-                    stage.close();
-                } catch (IOException e) {
-                    System.out.println(e);
-                }
-            }
-        }
+        switch (whichButtonPushed) {
+            //Ha a program alapértelmezetten fut le, azaz új személyt adunk az adatbázishoz
+            case 0:
+                errorText.setText("");
+                if (nameInput.getText() == null || nameInput.getText().trim().isEmpty()
+                        || dateOfBirthInput.getValue() == null
+                        || favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
+                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
+                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
+                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
+                    errorText.setText("Error: Fill in the obligatory inputs!");
+                } else {
+                    try {
+                        //Controller visszaadása a fő Scene-nek
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        FXMLController controller = Datas.fxmlController;
+                        controller.PersonAdder(nameInput.getText(), dateOfBirthInput.getValue(), favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
 
+                        Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
+                        stage.close();
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                }
+                break;
+            //Ha egy adott személyhez egy új locationt adunk
+            case 1:
+                errorText.setText("");
+                if (favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
+                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
+                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
+                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
+                    errorText.setText("Error: Fill in the obligatory inputs!");
+                } else {
+                    try {
+                        //Controller visszaadása a fő Scene-nek
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        FXMLController controller = Datas.fxmlController;
+                        controller.LocationAdder(favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
+                        Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
+                        stage.close();
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                }
+                break;
+
+            //Ha egy létező személyt módosítani akarunk
+            case 2: {
+                errorText.setText("");
+                if (nameInput.getText() == null || nameInput.getText().trim().isEmpty()
+                        || dateOfBirthInput.getValue() == null) {
+                    errorText.setText("Error: Fill in the obligatory inputs!");
+                } else {
+                    try {
+                        //Controller visszaadása a fő Scene-nek
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        FXMLController controller = Datas.fxmlController;
+                        controller.editPerson(nameInput.getText(), dateOfBirthInput.getValue());
+                        Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
+                        stage.close();
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+            break;
+            //Ha egy létező személynek a location/locationjai közül módosítani akarjuk valamelyiket
+            case 3: {
+                errorText.setText("");
+                if (favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
+                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
+                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
+                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
+                    errorText.setText("Error: Fill in the obligatory inputs!");
+                } else {
+                    try {
+                        //Controller visszaadása a fő Scene-nek
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        FXMLController controller = Datas.fxmlController;
+                        controller.editLocation(favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
+                        Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
+                        stage.close();
+                    } catch (IOException e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+            break;
+        }
     }
 
     @Override

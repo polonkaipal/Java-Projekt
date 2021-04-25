@@ -6,11 +6,7 @@
 package hu.unideb.inf;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javafx.collections.ObservableList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,9 +36,7 @@ public class Person {
     @Column(name = "locations")
     @OneToMany(targetEntity = Location.class)
     private List<Location> locations;
-    
-    
-    
+
     private ObservableList<String> names;
 
     /**
@@ -108,7 +102,7 @@ public class Person {
     public void removeLocation(Location location) {
         locations.remove(location);
     }
-    
+
     /**
      * @return the location list names
      */
@@ -117,13 +111,12 @@ public class Person {
     }
 
     /**
-     * @param locationListNames the locationListNames to set
+     * @param names
      */
     public void setLocationListNames(ObservableList<String> names) {
         this.names = names;
     }
 
-    
     public Person(String name, LocalDate dateOfBirth, List<Location> locations, ObservableList<String> names) {
         this.names = names;
         this.name = name;
