@@ -5,8 +5,7 @@
  */
 package hu.unideb.inf;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,10 +31,10 @@ public class Location {
 
     private double altitude;
 
-    @OneToMany(targetEntity = Tag.class)
-    private List<Tag> tags;
+    private String img;
 
-    private String description;
+    @OneToMany(targetEntity = Tag.class)
+    private String details;
 
     /**
      * @return the id
@@ -108,43 +107,74 @@ public class Location {
     }
 
     /**
+     * @return the image
+     */
+    public String getImage() {
+        return img;
+    }
+
+    /**
+     * @param img the image to set
+     */
+    public void setImage(String img) {
+        this.img = img;
+    }
+
+    /**
      * @return the tags
      */
-    public List<Tag> getTags() {
-        return tags;
+    public String getDetails() {
+        return details;
     }
 
     /**
      * @param tags the tags to set
      */
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    public void setDetails(String tags) {
+        this.details = tags;
     }
 
-    public void addTag(Tag tag) {
-        tags.add(tag);
+    public Location(String name, Double latitude, Double longitude, Double altitude, String img, String details) {
+
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+        this.img = img;
+        this.details = details;
+    }
+    
+    @Override
+    public int hashCode() {
+        long hash = 7;
+        hash = 11 * hash + this.id;
+        hash = 11 * hash + Objects.hashCode(this.name);
+        hash = 11 * hash + (long)this.latitude;
+        hash = 11 * hash + (long)this.longitude;
+        hash = 11 * hash + (long)this.altitude;
+        hash = 11 * hash + Objects.hashCode(this.img);
+        hash = 11 * hash + Objects.hashCode(this.details);
+        return (int)hash;
     }
 
-    public void removeTag(Tag tag) {
-        tags.remove(tag);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Location other = (Location) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
     }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Location() {
-        tags = new ArrayList<>();
-    }
-
 }
