@@ -5,9 +5,9 @@
  */
 package hu.unideb.inf;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
+import javafx.collections.ObservableList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,12 +31,14 @@ public class Person {
     private String name;
 
     @Column(name = "dateOfBirth")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "locations")
     @OneToMany(targetEntity = Location.class)
     private List<Location> locations;
 
+    private ObservableList<String> names;
+    
     /**
      * @return the id
      */
@@ -66,16 +68,16 @@ public class Person {
     }
 
     /**
-     * @return the birthOfYear
+     * @return the dateOfBirth
      */
-    public Date getBirthOfYear() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
     /**
-     * @param dateOfBirth the birthOfYear to set
+     * @param dateOfBirth the dateOfBirth to set
      */
-    public void setBirthOfYear(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -101,13 +103,25 @@ public class Person {
         locations.remove(location);
     }
 
-    public Person() {
-        locations = new ArrayList<>();
+    /**
+     * @return the location list names
+     */
+    public ObservableList<String> getLocationListNames() {
+        return names;
     }
 
-    public Person(String name, Date dateOfBirth, List<Location> locations) {
+    /**
+     * @param names
+     */
+    public void setLocationListNames(ObservableList<String> names) {
+        this.names = names;
+    }
+
+    public Person(String name, LocalDate dateOfBirth, List<Location> locations, ObservableList<String> names) {
+        this.names = names;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.locations = locations;
     }
+
 }
