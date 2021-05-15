@@ -158,6 +158,13 @@ public class LocationTest {
     
     @Test
     public void TestConstructor() {
+        Location testLoc = new Location("Firenze", 43.792363, 11.246212, 10.5, "kepFirenze", "zivataros");
         
+        assertEquals(testLoc.getName(), "Firenze");
+        assertEquals(testLoc.getLatitude(), 43.792363);
+        assertEquals(testLoc.getLongitude(), 11.246212);
+        assertEquals(testLoc.getAltitude(), 10.5);
+        assertEquals(testLoc.getImage(), "kepFirenze");
+        assertEquals(testLoc.getDetails(), "zivataros");
     }
 }
