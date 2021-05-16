@@ -4,14 +4,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="341.0" prefWidth="647.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.PersonDetailsSceneFXMLController">
+<AnchorPane id="AnchorPane" prefHeight="387.0" prefWidth="647.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.PersonDetailsSceneFXMLController">
    <children>
       <Label alignment="TOP_CENTER" layoutX="174.0" layoutY="14.0" prefHeight="47.0" prefWidth="269.0" text="A program leírása" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <font>
             <Font size="25.0" />
          </font>
       </Label>
-      <Label fx:id="descriptionLabel" alignment="TOP_LEFT" layoutX="113.0" layoutY="101.0" prefHeight="163.0" prefWidth="422.0" text="A programban személyek kedvenc helyeit lehet tárolni a földrajzi szélesség, hosszúság és magasság megadásával, valamint képet is lehet csatolni és címkék is adhatóak az egyes helyekhez (pl. mediterrán, esős, csendes, zsúfolt, stb.)." textAlignment="CENTER" wrapText="true">
+      <Label fx:id="descriptionLabel" alignment="TOP_LEFT" layoutX="12.0" layoutY="77.0" prefHeight="143.0" prefWidth="623.0" text="A programban személyek kedvenc helyeit lehet tárolni a földrajzi szélesség, hosszúság és magasság megadásával, valamint képet is lehet csatolni és címkék is adhatóak az egyes helyekhez (pl. mediterrán, esős, csendes, zsúfolt, stb.)." wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="descriptionLabel1" alignment="TOP_LEFT" layoutX="14.0" layoutY="230.0" prefHeight="143.0" prefWidth="632.0" text="Útmutató: A programban az 'Add person' menüpont alatt lehet új személyeket felvenni a listára, és itt már meg is lehet adni egy kedvenc helyet, későbbi módosításokra pedig az 'Add location', 'Edit person', 'Edit location' menüpontok segítségével van lehetőség. A 'View' gombra kattintva a kijelölt személy kijelölt kedvenc helyéhez adott címkék jelennek meg." wrapText="true">
          <font>
             <Font size="18.0" />
          </font>
