@@ -1,7 +1,10 @@
 package hu.unideb.inf;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +34,6 @@ public class FXMLController implements Initializable {
     private List<Person> persons = new ArrayList<>();
 
     @FXML
-    private MenuItem addLocation;
-
-    @FXML
-    private MenuItem deleteLocation;
-
-    @FXML
-    private MenuItem addPersonMenuItem;
-
-    @FXML
     private ListView<String> personNameList;
 
     @FXML
@@ -62,15 +56,6 @@ public class FXMLController implements Initializable {
 
     @FXML
     private Label altitudeOutput;
-
-    @FXML
-    private Button detailsViewBtn;
-
-    @FXML
-    private MenuItem editLocation;
-
-    @FXML
-    private MenuItem editPerson;
 
     @FXML
     void detailsViewBtnClick(ActionEvent event) {
@@ -113,7 +98,6 @@ public class FXMLController implements Initializable {
         } else {
             System.out.println("The Person Details window has been already opened!");
         }
-
     }
 
     @FXML
@@ -121,7 +105,6 @@ public class FXMLController implements Initializable {
 
     @FXML
     void deletePerson(ActionEvent event) {
-
         String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
 
         //ha a személy lista nem üres, és ki lett választva a személy
@@ -420,10 +403,35 @@ public class FXMLController implements Initializable {
 
         stageLoadedAddPersonAndLocation = false;
     }
+    
+    private boolean stageLoadedAbout = false;
+    @FXML
+    void aboutMenuClicked(ActionEvent event)
+    {
+        if (!stageLoadedAbout) {
+            try {
+                stageLoadedAbout = true;
+
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AboutSceneFXML.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+
+                Stage stage = new Stage();
+                stage.setTitle("About");
+                stage.setScene(new Scene(root1));
+
+                stage.setOnCloseRequest((eventt) -> {
+                    stageLoadedAbout = false;
+                });
+                stage.show();
+
+            } catch (IOException e) {
+                System.out.println("Can't load");
+            }
+        }
+    }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb
-    ) {
+    public void initialize(URL url, ResourceBundle rb) {
 
     }
 }
