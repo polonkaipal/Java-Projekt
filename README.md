@@ -12,12 +12,13 @@ A felhasználók életkora is el van tárolva, így egy felmérést is ad a prog
 Használat
 ----------
 
-TODO...
+A programban az 'Add person' menüpont alatt lehet új személyeket felvenni a listára, és itt már meg is lehet adni egy kedvenc helyet, későbbi módosításokra pedig az 'Add location', 'Edit person', 'Edit location' menüpontok segítségével van lehetőség. A 'View' gombra kattintva a kijelölt személy kijelölt kedvenc helyéhez adott címkék jelennek meg.
 
 Screenshot
 ----------
-(Minta)
-![screenshot](https://user-images.githubusercontent.com/60934705/112894241-4f299300-90e4-11eb-88a3-1fd60ab93b1f.PNG)
+![multi](https://user-images.githubusercontent.com/60934705/118408614-0e370f00-b68f-11eb-8d3b-7d48e623bb18.PNG)
+![zoomaddperson](https://user-images.githubusercontent.com/60934705/118408623-11ca9600-b68f-11eb-93e7-9abecac906bb.png)
+![velence](https://user-images.githubusercontent.com/60934705/118408619-1000d280-b68f-11eb-8e06-ddb83be5c5a4.PNG)
 
 Szerzők
 -------

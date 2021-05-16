@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 public class PersonDetailsSceneFXMLController {
     
     
-      @FXML
+    @FXML
     private Label detailsTitle;
 
     @FXML
