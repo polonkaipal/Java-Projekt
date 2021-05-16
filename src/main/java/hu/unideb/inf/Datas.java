@@ -5,8 +5,6 @@
  */
 package hu.unideb.inf;
 
-import javafx.scene.Parent;
-
 /**
  *
  * @author Szondi

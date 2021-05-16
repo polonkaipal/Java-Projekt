@@ -1,10 +1,7 @@
 package hu.unideb.inf;
 
-import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
