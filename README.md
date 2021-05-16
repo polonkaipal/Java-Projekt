@@ -18,7 +18,6 @@ Screenshot
 ----------
 ![multi](https://user-images.githubusercontent.com/60934705/118408614-0e370f00-b68f-11eb-8d3b-7d48e623bb18.PNG)
 ![zoomaddperson](https://user-images.githubusercontent.com/60934705/118408623-11ca9600-b68f-11eb-93e7-9abecac906bb.png)
-![zoomaddLocation](https://user-images.githubusercontent.com/60934705/118408627-12fbc300-b68f-11eb-9592-cdd554e253aa.png)
 ![velence](https://user-images.githubusercontent.com/60934705/118408619-1000d280-b68f-11eb-8e06-ddb83be5c5a4.PNG)
 
 Szerzők
