@@ -141,6 +141,16 @@ public class PersonAddSceneFXMLController implements Initializable {
             fileSelected.setText("Image file selection cancelled.");
         }
     }
+    
+    private boolean isNumeric(String str) { 
+        try {  
+          Double.parseDouble(str);  
+          return true;
+        }
+        catch(NumberFormatException e){
+              return false;  
+        }  
+    }
 
     @FXML
     private Label errorText;
@@ -154,9 +164,9 @@ public class PersonAddSceneFXMLController implements Initializable {
                 if (nameInput.getText() == null || nameInput.getText().trim().isEmpty()
                         || dateOfBirthInput.getValue() == null
                         || favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
-                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
-                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
-                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
+                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty() || !isNumeric(longitudeInput.getText())
+                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty() || !isNumeric(altitudeInput.getText())
+                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty() || !isNumeric(latitudeInput.getText())) {
                     errorText.setText("Error: Fill in the obligatory inputs!");
                 } else {
                     try {
@@ -177,9 +187,9 @@ public class PersonAddSceneFXMLController implements Initializable {
             case 1:
                 errorText.setText("");
                 if (favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
-                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
-                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
-                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
+                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty() || !isNumeric(longitudeInput.getText())
+                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty() || !isNumeric(altitudeInput.getText())
+                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty() || !isNumeric(latitudeInput.getText())) {
                     errorText.setText("Error: Fill in the obligatory inputs!");
                 } else {
                     try {
@@ -221,9 +231,9 @@ public class PersonAddSceneFXMLController implements Initializable {
             case 3: {
                 errorText.setText("");
                 if (favoritePlaceInput.getText() == null || favoritePlaceInput.getText().trim().isEmpty()
-                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty()
-                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty()
-                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty()) {
+                        || longitudeInput.getText() == null || longitudeInput.getText().trim().isEmpty() || !isNumeric(longitudeInput.getText())
+                        || altitudeInput.getText() == null || altitudeInput.getText().trim().isEmpty() || !isNumeric(altitudeInput.getText())
+                        || latitudeInput.getText() == null || latitudeInput.getText().trim().isEmpty() || !isNumeric(latitudeInput.getText())) {
                     errorText.setText("Error: Fill in the obligatory inputs!");
                 } else {
                     try {
