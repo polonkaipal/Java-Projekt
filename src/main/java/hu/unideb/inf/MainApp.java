@@ -24,7 +24,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
         
-        stage.setTitle("Travelers");
+        stage.setTitle("Travellers");
         stage.setScene(scene);
         stage.show();
     }

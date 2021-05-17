@@ -1,7 +1,7 @@
-Travelers
+Travellers
 ==========
 
-A **Travelers** egy kedvenc helyek tárolását megvalósító alkalmazás.
+A **Travellers** egy kedvenc helyek tárolását megvalósító alkalmazás.
 
 A projekt leírása
 ------------------------
