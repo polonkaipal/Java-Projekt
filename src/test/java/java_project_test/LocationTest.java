@@ -5,7 +5,7 @@
  */
 package java_project_test;
 
-import hu.unideb.inf.Location;
+import com.travelers.Location;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -125,18 +125,18 @@ public class LocationTest {
     
     @Test
     public void TestGetImage() {
-        assertEquals(underTest1.getImage(), "kepFirenze");
-        assertEquals(underTest2.getImage(), "Picture");
+        assertEquals(underTest1.getImg(), "kepFirenze");
+        assertEquals(underTest2.getImg(), "Picture");
     }
     
     @Test
     public void TestSetImage() {
-        underTest1.setImage("PictureFirenze");
-        underTest2.setImage("kepPaphos");
-        assertNotEquals(underTest1.getImage(), "kepFirenze");
-        assertNotEquals(underTest2.getImage(), "Picture");
-        assertEquals(underTest1.getImage(), "PictureFirenze");
-        assertEquals(underTest2.getImage(), "kepPaphos");
+        underTest1.setImg("PictureFirenze");
+        underTest2.setImg("kepPaphos");
+        assertNotEquals(underTest1.getImg(), "kepFirenze");
+        assertNotEquals(underTest2.getImg(), "Picture");
+        assertEquals(underTest1.getImg(), "PictureFirenze");
+        assertEquals(underTest2.getImg(), "kepPaphos");
     }
     
     @Test
@@ -164,7 +164,7 @@ public class LocationTest {
         assertEquals(testLoc.getLatitude(), 43.792363);
         assertEquals(testLoc.getLongitude(), 11.246212);
         assertEquals(testLoc.getAltitude(), 10.5);
-        assertEquals(testLoc.getImage(), "kepFirenze");
+        assertEquals(testLoc.getImg(), "kepFirenze");
         assertEquals(testLoc.getDetails(), "zivataros");
     }
 }

@@ -1,4 +1,4 @@
-package hu.unideb.inf;
+package com.travelers;
 
 import java.sql.SQLException;
 import javafx.application.Application;
@@ -27,21 +27,19 @@ public class MainApp extends Application {
         stage.setTitle("Travellers");
         stage.setScene(scene);
         stage.show();
+        
+        shutDownDatabase();
     }
 
-    /**
-     * The main() method is ignored in correctly deployed JavaFX application.
-     * main() serves only as fallback in case the application can not be
-     * launched through deployment artifacts, e.g., in IDEs with limited FX
-     * support. NetBeans ignores main().
-     *
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }
 
     private static void startDatabase() throws SQLException {
         new Server().runTool("-tcp", "-web", "-ifNotExists");
+    }
+
+    private void shutDownDatabase() {
+        new Server().shutdown();
     }
 }

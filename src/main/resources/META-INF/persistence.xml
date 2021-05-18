@@ -6,15 +6,14 @@
 
     <persistence-unit name="br.com.fredericci.pu">
         <description>Hibernate EntityManager Demo</description>
-        <class>hu.unideb.inf.Person</class>
-        <class>hu.unideb.inf.Location</class>
-        <class>hu.unideb.inf.Tag</class>
+        <class>com.travelers.Location</class>
+        <class>com.travelers.Person</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:~/data"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:~/db_Travelers"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
             <property name="javax.persistence.jdbc.password" value=""/>
         </properties>
