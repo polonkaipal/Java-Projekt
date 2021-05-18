@@ -116,6 +116,10 @@ public class Person {
     public void setLocationListNames(ObservableList<String> names) {
         this.names = names;
     }
+    
+    public Person(){
+        
+    }
 
     public Person(String name, LocalDate dateOfBirth, List<Location> locations, ObservableList<String> names) {
         this.names = names;

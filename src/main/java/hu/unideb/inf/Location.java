@@ -134,6 +134,10 @@ public class Location {
         this.details = tags;
     }
 
+    public Location() {
+
+    }
+
     public Location(String name, Double latitude, Double longitude, Double altitude, String img, String details) {
 
         this.name = name;
@@ -143,18 +147,18 @@ public class Location {
         this.img = img;
         this.details = details;
     }
-    
+
     @Override
     public int hashCode() {
         long hash = 7;
         hash = 11 * hash + this.id;
         hash = 11 * hash + Objects.hashCode(this.name);
-        hash = 11 * hash + (long)this.latitude;
-        hash = 11 * hash + (long)this.longitude;
-        hash = 11 * hash + (long)this.altitude;
+        hash = 11 * hash + (long) this.latitude;
+        hash = 11 * hash + (long) this.longitude;
+        hash = 11 * hash + (long) this.altitude;
         hash = 11 * hash + Objects.hashCode(this.img);
         hash = 11 * hash + Objects.hashCode(this.details);
-        return (int)hash;
+        return (int) hash;
     }
 
     @Override
