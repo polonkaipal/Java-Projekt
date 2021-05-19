@@ -27,8 +27,8 @@ public class FXMLController implements Initializable {
     private boolean stageLoadedAddPersonAndLocation = false;
     private boolean stageLoadedPersonDetail = false;
     
-    LocationDAO locDAO = new JpaLocationDAO();
-    PersonDAO personDAO = new JpaPersonDAO();
+    public static LocationDAO locDAO = new JpaLocationDAO();
+    public static PersonDAO personDAO = new JpaPersonDAO();
     
     private List<Person> persons = new ArrayList<>();
     

@@ -1,6 +1,8 @@
 package com.travelers;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Month;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +17,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         startDatabase();
-        
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         FXMLController fxmlController = fxmlLoader.getController();
@@ -27,8 +29,14 @@ public class MainApp extends Application {
         stage.setTitle("Travellers");
         stage.setScene(scene);
         stage.show();
-        
+    }
+    
+    @Override
+    public void stop() {
+        FXMLController.locDAO.close();
+        FXMLController.personDAO.close();
         shutDownDatabase();
+        System.out.println("#---Close Program---#");
     }
 
     public static void main(String[] args) {
