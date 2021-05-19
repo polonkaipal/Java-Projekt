@@ -95,13 +95,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" + "id=" + id + ", name=" + name + '}';
+        return "Person{" + "name=" + name + '}';
     }
-
-    public Person(int id, String name, LocalDate dateOfBirth) {
-        this.id = id;
-        this.name = name;
-        this.dateOfBirth = dateOfBirth;
-    }
-
 }
