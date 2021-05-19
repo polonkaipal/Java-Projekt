@@ -21,6 +21,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
+/**
+ *
+ * @author Szondi
+ */
 public class FXMLController implements Initializable {
 
     //Main Scene FXML items
@@ -30,13 +34,11 @@ public class FXMLController implements Initializable {
     public static LocationDAO locDAO = new JpaLocationDAO();
     public static PersonDAO personDAO = new JpaPersonDAO();
     
-    private List<Person> persons = new ArrayList<>();
-    
     @FXML
-    private ListView<String> personNameList;
+    private ListView<Person> personListView;
 
     @FXML
-    private ListView<String> locationNameList;
+    private ListView<String> locationListView;
 
     @FXML
     private ImageView personImage;
@@ -55,73 +57,46 @@ public class FXMLController implements Initializable {
 
     @FXML
     private Label altitudeOutput;
-
+    
     @FXML
-    void detailsViewBtnClick(ActionEvent event) {
-        if (!stageLoadedPersonDetail) {
-            try {
-                //A window csak egyszer megnyitható
-                stageLoadedPersonDetail = true;
+    void PersonAdder(String name, LocalDate date, String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) {
+        
+        if (img == null) img = "";
 
-                //A details scene controllerének létrehozása
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonDetailsSceneFXML.fxml"));
-                Parent root1 = (Parent) fxmlLoader.load();
-                PersonDetailsSceneFXMLController personDetailsController = fxmlLoader.getController();
-                Datas.personDetailsController = personDetailsController;
-
-                //Az input kiválasztása, majd átadása a Details controllernek
-                //kiválasztás
-                String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
-                String chosenLocation = locationNameList.getSelectionModel().getSelectedItem();
-                //átadás, ha létezik, és ki van választva a person
-                if (!locationNameList.getItems().isEmpty() && chosenLocation != null && chosenPerson != null) {
-                    int chosenLocationIndex = locationNameList.getSelectionModel().getSelectedIndex();
-                    int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
-                    //adat betöltése a details controllerbe
-                    personDetailsController.LoadDetails(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getDetails());
-                }
-                //scene betöltés
-                Stage stage = new Stage();
-                stage.setTitle("Location Details");
-                stage.setScene(new Scene(root1));
-
-                //érzékelje, ha bezárták az ablakot
-                stage.setOnCloseRequest((eventt) -> {
-                    stageLoadedPersonDetail = false;
-                });
-                stage.show();
-
-            } catch (IOException e) {
-                System.out.println("Can't load");
-            }
-        } else {
-            System.out.println("The Person Details window has been already opened!");
-        }
+        //Location létrehozása
+        List<Location> locations = new ArrayList<>();
+        Location location = new Location(favoritePlace, latitude, longitude, altitude, img, textArea);
+        locations.add(location);
+        
+        //Person létrehozása
+        Person p = new Person(name, date, locations);
+        personListView.getItems().add(p);
+        locDAO.saveLocation(location);
+        personDAO.savePerson(p);
+        
+        //mentés után újra megnyithatóvá tesszük az addPerson folyamatot
+        stageLoadedAddPersonAndLocation = false;
     }
 
     @FXML
     void deletePerson(ActionEvent event) {
-        String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
+        Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
 
         //ha a személy lista nem üres, és ki lett választva a személy
-        if (!personNameList.getItems().isEmpty() && chosenPerson != null) {
-            int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+        if (!personListView.getItems().isEmpty() && chosenPerson != null) {
+            int chosenPersonIndex = personListView.getSelectionModel().getSelectedIndex();
             
-            Person dPerson = persons.get(chosenPersonIndex);
-            
-            personDAO.deletePerson(dPerson);
+            personDAO.deletePerson(chosenPerson);
             
             List<Location> locList = locDAO.getLocations();
             for (Location loc: locList) {
-                if (dPerson.getLocations().indexOf(loc) != -1) {
+                if (chosenPerson.getLocations().indexOf(loc) != -1) {
                     locDAO.deleteLocation(loc);
                 }
             }
-            //kitörli a listviewből a kiválasztott személy nevét
-            personNameList.getItems().remove(chosenPersonIndex);
-            //kitörli a személyt
-            persons.remove(chosenPersonIndex);
-            locationNameList.getItems().clear();
+            //kitörli a kiválasztott személyt
+            personListView.getItems().remove(chosenPersonIndex);
+            locationListView.getItems().clear();
         }
     }
 
@@ -157,107 +132,30 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    void PersonAdder(String name, LocalDate date, String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) {
-        List<Location> locations = new ArrayList<>();
-        //Location létrehozása
-        if (img == null) {
-            img = "";
-        }
-        Location location = new Location(favoritePlace, latitude, longitude, altitude, img, textArea);
-        locations.add(location);
-        
-        //Person létrehozása
-        Person p = new Person(name, date, locations);
-        persons.add(p);
-
-        //A személyhez tartozó listviewhez hozzáadjuk a személy nevét
-        personNameList.getItems().add(name);
-        locDAO.saveLocation(location);
-        personDAO.savePerson(p);
-        //mentés után újra megnyithatóvá tesszük az addPerson folyamatot
-        stageLoadedAddPersonAndLocation = false;
-    }
-
-    @FXML
     void LocationAdder(String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) {
+        
+        if (img == null) img = "";
         //Location létrehozása
-        if (img == null) {
-            img = "";
-        }
         Location location = new Location(favoritePlace, longitude, latitude, altitude, img, textArea);
         //választott személy indexének lekérdezése
-        int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+        int chosenPersonIndex = personListView.getSelectionModel().getSelectedIndex();
         //választott személyhez hozzáadjuk a locationt
-        persons.get(chosenPersonIndex).getLocations().add(location);
-        
         locDAO.saveLocation(location);
         personDAO.getPersons().get(chosenPersonIndex).addLocation(location);
-        personDAO.savePerson(personDAO.getPersons().get(chosenPersonIndex));
+        personDAO.updatePerson(personDAO.getPersons().get(chosenPersonIndex));
+        
+        personListView.refresh();
         
         //újranyithatóság engedélyezése
         stageLoadedAddPersonAndLocation = false;
     }
 
     @FXML
-    void personListViewHandleClick(MouseEvent event) {
-        //Ha a person listán elkattintunk, akkor az adatok alapjáraton legyenek üresek
-        favoritePlaceOutput.setText("...");
-        dateOfBirthOutput.setText("...");
-        latitudeOutput.setText("...");
-        longitudeOutput.setText("...");
-        altitudeOutput.setText("...");
-        personImage.setImage(null);
-
-        String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
-        //Ha a listview nem üres és ki van jelölve egy személy
-        if (!personNameList.getItems().isEmpty() && chosenPerson != null) {
-            int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
-            dateOfBirthOutput.setText(persons.get(chosenPersonIndex).getDateOfBirth().toString());
-
-            //Átírja a LocationListet az aktuális személy helyek listájára
-            ObservableList<String> locationsListNames = FXCollections.observableArrayList();
-            
-            for (Location loc : persons.get(chosenPersonIndex).getLocations()) {
-                if (locationsListNames.indexOf(loc.getName()) == -1) {
-                    locationsListNames.add(loc.getName());
-                }
-            }
-            locationNameList.setItems(locationsListNames);
-        }
-    }
-
-    @FXML
-    void locationListViewHandleClick(MouseEvent event) {
-        //minden locationListView kattintásnál a kép üres alapértelmezetten, ha a felhasználó töltött fel képet, akkor a program később betölti
-        personImage.setImage(null);
-        String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
-        String chosenLocation = locationNameList.getSelectionModel().getSelectedItem();
-
-        //Ha kattintottak személyre a LocationListView nem üres, kattintottak locationra
-        if (!locationNameList.getItems().isEmpty() && chosenLocation != null && chosenPerson != null) {
-            int chosenLocationIndex = locationNameList.getSelectionModel().getSelectedIndex();
-            int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
-
-            //Adatok betöltése
-            favoritePlaceOutput.setText(String.valueOf(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getName()));
-            latitudeOutput.setText(String.valueOf(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getLatitude()));
-            longitudeOutput.setText(String.valueOf(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getLongitude()));
-            altitudeOutput.setText(String.valueOf(persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getAltitude()));
-            //kép betöltése
-            String img = persons.get(chosenPersonIndex).getLocations().get(chosenLocationIndex).getImg();
-            if (!img.isEmpty()) {
-                Image image = new Image(img);
-                personImage.setImage(image);
-            } else {
-                personImage.setImage(null);
-            }
-        }
-    }
-
-    @FXML
     void addLocationClicked(ActionEvent event) {
         //Ha Nincs más adder/editor window megnyitva, a person lista nem üres, ki van ott jelölve egy személy
-        if ((!stageLoadedAddPersonAndLocation) & (!personNameList.getItems().isEmpty()) & personNameList.getSelectionModel().getSelectedItem() != null) {
+        if ((!stageLoadedAddPersonAndLocation) &&
+            (!personListView.getItems().isEmpty()) &&
+              personListView.getSelectionModel().getSelectedItem() != null) {
             try {
                 //Más adder window megnyitásának megakadályozása
                 stageLoadedAddPersonAndLocation = true;
@@ -268,10 +166,10 @@ public class FXMLController implements Initializable {
                 PersonAddSceneFXMLController addLocationController = fxmlLoader.getController();
                 Datas.addPersonControllers = addLocationController;
 
-                int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
-
                 //Személy név-kor átadás, így azt a felhasználó nem módosíthatja
-                addLocationController.addJustLocation(persons.get(chosenPersonIndex).getName(), persons.get(chosenPersonIndex).getDateOfBirth());
+                Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+                addLocationController.addJustLocation(chosenPerson.getName(), chosenPerson.getDateOfBirth());
+                
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));
                 stage.setTitle("Person Adder");
@@ -291,26 +189,31 @@ public class FXMLController implements Initializable {
 
     @FXML
     void deleteLocationClicked(ActionEvent event) {
-        String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
-        String chosenPersonLocation = locationNameList.getSelectionModel().getSelectedItem();
+        Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+        Location delLocation = chosenPerson.getLocations().get(locationListView.getSelectionModel().getSelectedIndex());
 
         //Ha a personListView nem üres, személy ki van jelölve, LocationListView nem üres, location ki van jelölve
-        if (!personNameList.getItems().isEmpty() && chosenPerson != null && chosenPersonLocation != null && !locationNameList.getItems().isEmpty()) {
-            int chosenPersonLocationIndex = locationNameList.getSelectionModel().getSelectedIndex();
-            int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+        if (!personListView.getItems().isEmpty() && chosenPerson != null && delLocation != null && !locationListView.getItems().isEmpty()) {
+            int chosenPersonLocationIndex = locationListView.getSelectionModel().getSelectedIndex();
+            int chosenPersonIndex = personListView.getSelectionModel().getSelectedIndex();
             //kitörli a listviewből a kiválasztott location nevét
-            locationNameList.getItems().remove(chosenPersonLocationIndex);
+            locationListView.getItems().remove(chosenPersonLocationIndex);
             //kitörli a locationt
-            Location deleteLoc = persons.get(chosenPersonIndex).getLocations().get(chosenPersonLocationIndex);
-            locDAO.deleteLocation(deleteLoc);
-            persons.get(chosenPersonIndex).removeLocation(deleteLoc);
+            List<Location> locList = locDAO.getLocations();
+            for (Location loc: locList) {
+                if (loc.getId() == delLocation.getId()) {
+                    locDAO.deleteLocation(loc);
+                }
+            }
+            personDAO.getPersons().get(chosenPersonIndex).removeLocation(delLocation);
+            personListView.refresh();
         }
     }
 
     @FXML
     void editPersonClicked(ActionEvent event) {
         //Nincs másik adder/editor window megnyitva, personListView nem üres, személy ki van jelölve
-        if ((!stageLoadedAddPersonAndLocation) & (!personNameList.getItems().isEmpty()) & personNameList.getSelectionModel().getSelectedItem() != null) {
+        if ((!stageLoadedAddPersonAndLocation) & (!personListView.getItems().isEmpty()) & personListView.getSelectionModel().getSelectedItem() != null) {
             try {
                 //Más adder window megnyitásának megakadályozása
                 stageLoadedAddPersonAndLocation = true;
@@ -319,9 +222,9 @@ public class FXMLController implements Initializable {
                 PersonAddSceneFXMLController addLocationController = fxmlLoader.getController();
                 Datas.addPersonControllers = addLocationController;
 
-                int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
+                Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
                 //Adatok átadása, ezek módosíthatóak lesznek
-                addLocationController.editPerson(persons.get(chosenPersonIndex).getName(), persons.get(chosenPersonIndex).getDateOfBirth());
+                addLocationController.editPerson(chosenPerson.getName(), chosenPerson.getDateOfBirth());
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));
                 stage.setTitle("Person Adder");
@@ -342,27 +245,25 @@ public class FXMLController implements Initializable {
     @FXML
     void editPerson(String Name, LocalDate date) {
         //Az addPerson Controllerből kapja az adatokat
-        String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
-        int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
-        persons.get(chosenPersonIndex).setName(Name);
+        Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+        chosenPerson.setName(Name);
+        chosenPerson.setDateOfBirth(date);
 
-        //Átírja a nevet a personListView-ben
-        personNameList.getItems().remove(chosenPersonIndex);
-        personNameList.getItems().add(chosenPersonIndex, Name);
         //person date(kor) átírása
-        persons.get(chosenPersonIndex).setDateOfBirth(date);
-        dateOfBirthOutput.setText(persons.get(chosenPersonIndex).getDateOfBirth().toString());
+        dateOfBirthOutput.setText(chosenPerson.getDateOfBirth().toString());
         
-        personDAO.updatePerson(persons.get(chosenPersonIndex));
+        personDAO.updatePerson(chosenPerson);
+        
+        personListView.refresh();
         stageLoadedAddPersonAndLocation = false;
     }
 
     @FXML
     void editLocationClicked(ActionEvent event) {
-        String chosenPerson = personNameList.getSelectionModel().getSelectedItem();
-        String chosenPersonLocation = locationNameList.getSelectionModel().getSelectedItem();
+        Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+        Location chosenPersonLocation = chosenPerson.getLocations().get(locationListView.getSelectionModel().getSelectedIndex());
         //Ha Nincs más adder/editor window megnyitva, nem üres a PersonListView, van személy kijelölve, nem üres a hozzá tartozó locationListView, van location kijelölve
-        if ((!stageLoadedAddPersonAndLocation) & (!personNameList.getItems().isEmpty() && chosenPerson != null && chosenPersonLocation != null && !locationNameList.getItems().isEmpty())) {
+        if ((!stageLoadedAddPersonAndLocation) & (!personListView.getItems().isEmpty() && chosenPerson != null && chosenPersonLocation != null && !locationListView.getItems().isEmpty())) {
             try {
                 //Más adder window megnyitásának megakadályozása
                 stageLoadedAddPersonAndLocation = true;
@@ -371,11 +272,11 @@ public class FXMLController implements Initializable {
                 PersonAddSceneFXMLController addLocationController = fxmlLoader.getController();
                 Datas.addPersonControllers = addLocationController;
 
-                int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
-                int chosenPersonLocationIndex = locationNameList.getSelectionModel().getSelectedIndex();
-                Location location = persons.get(chosenPersonIndex).getLocations().get(chosenPersonLocationIndex);
                 //Adatok átadása, a néven/koron kívűl minden adat módosítható lesz
-                addLocationController.editLocation(persons.get(chosenPersonIndex).getName(), persons.get(chosenPersonIndex).getDateOfBirth(), location.getName(), location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getImg(), location.getDetails());
+                addLocationController.editLocation(chosenPerson.getName(), chosenPerson.getDateOfBirth(),
+                                                   chosenPersonLocation.getName(), chosenPersonLocation.getLatitude(),
+                                                   chosenPersonLocation.getLongitude(), chosenPersonLocation.getAltitude(),
+                                                   chosenPersonLocation.getImg(), chosenPersonLocation.getDetails());
 
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));
@@ -396,13 +297,13 @@ public class FXMLController implements Initializable {
 
     @FXML
     void editLocation(String favoriePlace, double latitude, double longitude, double altitude, String img, String details) {
-        int chosenPersonIndex = personNameList.getSelectionModel().getSelectedIndex();
-        int chosenPersonLocationIndex = locationNameList.getSelectionModel().getSelectedIndex();
+        Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+        Location chosenLocation = chosenPerson.getLocations().get(locationListView.getSelectionModel().getSelectedIndex());
         
-        List<Location> locs = locDAO.getLocations();
+        List<Location> locList = locDAO.getLocations();
         
-        for (Location l : locs) {
-            if (l.getId() == persons.get(chosenPersonIndex).getLocations().get(chosenPersonLocationIndex).getId()) {
+        for (Location l : locList) {
+            if (l.getId() == chosenLocation.getId()) {
                 l.setAltitude(altitude);
                 l.setDetails(details);
                 l.setLatitude(latitude);
@@ -414,12 +315,20 @@ public class FXMLController implements Initializable {
         }
         
         Location location = new Location(favoriePlace, latitude, longitude, altitude, img, details);
-        persons.get(chosenPersonIndex).getLocations().set(chosenPersonLocationIndex, location);
+        //chosenPerson.getLocations().getItems().remove(chosenPersonLocation);
+        //chosenPerson.getLocations().getItems().add(location);
+        int chosenPersonIndex = personListView.getSelectionModel().getSelectedIndex();
+        int chosenLocationIndex = locationListView.getSelectionModel().getSelectedIndex();
+        personDAO.getPersons().get(chosenPersonIndex).getLocations().get(chosenLocationIndex).setName(favoriePlace);
+        personDAO.getPersons().get(chosenPersonIndex).getLocations().get(chosenLocationIndex).setLatitude(latitude);
+        personDAO.getPersons().get(chosenPersonIndex).getLocations().get(chosenLocationIndex).setLongitude(longitude);
+        personDAO.getPersons().get(chosenPersonIndex).getLocations().get(chosenLocationIndex).setAltitude(altitude);
+        personDAO.getPersons().get(chosenPersonIndex).getLocations().get(chosenLocationIndex).setImg(img);
+        personDAO.getPersons().get(chosenPersonIndex).getLocations().get(chosenLocationIndex).setDetails(details);
+        
+        personListView.refresh();
 
         //Adatok kiírása a fő lapon
-        //location nevének átírása a locationListViewben
-        locationNameList.getItems().remove(chosenPersonLocationIndex);
-        locationNameList.getItems().add(chosenPersonLocationIndex, location.getName());
         favoritePlaceOutput.setText(location.getName());
         latitudeOutput.setText(String.valueOf(location.getLatitude()));
         longitudeOutput.setText(String.valueOf(location.getLongitude()));
@@ -434,6 +343,94 @@ public class FXMLController implements Initializable {
         stageLoadedAddPersonAndLocation = false;
     }
     
+    @FXML
+    void detailsViewBtnClick(ActionEvent event) {
+        if (!stageLoadedPersonDetail) {
+            try {
+                //A window csak egyszer megnyitható
+                stageLoadedPersonDetail = true;
+
+                //A details scene controllerének létrehozása
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/PersonDetailsSceneFXML.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+                PersonDetailsSceneFXMLController personDetailsController = fxmlLoader.getController();
+                Datas.personDetailsController = personDetailsController;
+
+                //Az input kiválasztása, majd átadása a Details controllernek
+                Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+                Location chosenLocation = chosenPerson.getLocations().get(locationListView.getSelectionModel().getSelectedIndex());
+                //átadás, ha létezik, és ki van választva a person
+                if (!locationListView.getItems().isEmpty() && chosenLocation != null && chosenPerson != null) {
+                    //adat betöltése a details controllerbe
+                    personDetailsController.LoadDetails(chosenLocation.getDetails());
+                }
+                //scene betöltés
+                Stage stage = new Stage();
+                stage.setTitle("Location Details");
+                stage.setScene(new Scene(root1));
+
+                //érzékelje, ha bezárták az ablakot
+                stage.setOnCloseRequest((eventt) -> {
+                    stageLoadedPersonDetail = false;
+                });
+                stage.show();
+
+            } catch (IOException e) {
+                System.out.println("Can't load");
+            }
+        } else {
+            System.out.println("The Person Details window has been already opened!");
+        }
+    }
+    
+    @FXML
+    void personListViewHandleClick(MouseEvent event) {
+        //Ha a person listán elkattintunk, akkor az adatok alapjáraton legyenek üresek
+        favoritePlaceOutput.setText("...");
+        dateOfBirthOutput.setText("...");
+        latitudeOutput.setText("...");
+        longitudeOutput.setText("...");
+        altitudeOutput.setText("...");
+        personImage.setImage(null);
+
+        Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+        //Ha a listview nem üres és ki van jelölve egy személy
+        if (!personListView.getItems().isEmpty() && chosenPerson != null) {
+            dateOfBirthOutput.setText(chosenPerson.getDateOfBirth().toString());
+            ObservableList<String> locationNames = FXCollections.observableArrayList();
+            for (Location l : chosenPerson.getLocations()) {
+                locationNames.add(l.getName());
+            }
+            locationListView.setItems(locationNames);
+        }
+    }
+    
+    @FXML
+    void locationListViewHandleClick(MouseEvent event) {
+        //minden locationListView kattintásnál a kép üres alapértelmezetten, ha a felhasználó töltött fel képet, akkor a program később betölti
+        personImage.setImage(null);
+        Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+        Location chosenLocation = chosenPerson.getLocations().get(locationListView.getSelectionModel().getSelectedIndex());
+
+        //Ha kattintottak személyre a LocationListView nem üres, kattintottak locationra
+        if (!locationListView.getItems().isEmpty() && chosenLocation != null && chosenPerson != null) {
+            //Adatok betöltése
+            favoritePlaceOutput.setText(String.valueOf(chosenLocation.getName()));
+            latitudeOutput.setText(String.valueOf(chosenLocation.getLatitude()));
+            longitudeOutput.setText(String.valueOf(chosenLocation.getLongitude()));
+            altitudeOutput.setText(String.valueOf(chosenLocation.getAltitude()));
+            //kép betöltése
+            String img = chosenLocation.getImg();
+            if (!img.isEmpty()) {
+                Image image = new Image(img);
+                personImage.setImage(image);
+            } else {
+                personImage.setImage(null);
+            }
+        }
+    }
+    
+    //AboutMenu bezárását figyeli
     private boolean stageLoadedAbout = false;
     @FXML
     void aboutMenuClicked(ActionEvent event)
@@ -462,10 +459,7 @@ public class FXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        List<Person> oldPersonList = personDAO.getPersons();
-        for (Person p : oldPersonList) {
-            persons.add(p);
-            personNameList.getItems().add(p.getName());
-        }
+        System.out.println("---------Init---------");
+        personListView.getItems().addAll(personDAO.getPersons());
     }
 }

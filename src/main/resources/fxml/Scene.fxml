@@ -44,12 +44,12 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <ListView fx:id="personNameList" layoutX="210.0" layoutY="41.0" onMouseClicked="#personListViewHandleClick" prefHeight="261.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <ListView fx:id="personListView" layoutX="210.0" layoutY="41.0" onMouseClicked="#personListViewHandleClick" prefHeight="261.0" prefWidth="398.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <ListView fx:id="locationNameList" layoutX="78.0" layoutY="29.0" onMouseClicked="#locationListViewHandleClick" prefHeight="232.0" prefWidth="172.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0" />
+                              <ListView fx:id="locationListView" layoutX="78.0" layoutY="29.0" onMouseClicked="#locationListViewHandleClick" prefHeight="232.0" prefWidth="172.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0" />
                               <MenuBar layoutX="17.0" layoutY="1.0" prefHeight="30.0" prefWidth="186.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                                 <menus>
                                   <Menu mnemonicParsing="false" text="File">

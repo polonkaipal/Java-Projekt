@@ -1,8 +1,6 @@
 package com.travelers;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.Month;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +11,11 @@ import org.h2.tools.Server;
 
 
 public class MainApp extends Application {
-
+    
     @Override
     public void start(Stage stage) throws Exception {
         startDatabase();
-
+        
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         FXMLController fxmlController = fxmlLoader.getController();

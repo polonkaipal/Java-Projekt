@@ -20,7 +20,7 @@ import org.mockito.MockitoAnnotations;
  * @author veres
  */
 public class LocationTest {
-    
+
     @Mock
     private Location underTest1, underTest2;
 
@@ -192,7 +192,7 @@ public class LocationTest {
     
     @Test
     public void TestToString() {
-        Assertions.assertEquals(underTest1.toString(), "Location{" + "name=" + "Firenze" + "}");
-        Assertions.assertEquals(underTest2.toString(), "Location{" + "name=" + "Paphos" + "}");
+        Assertions.assertEquals(underTest1.toString(), "Firenze");
+        Assertions.assertEquals(underTest2.toString(), "Paphos");
     }
 }
