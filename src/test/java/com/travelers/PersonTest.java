@@ -8,7 +8,6 @@ package com.travelers;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
-import javafx.collections.FXCollections;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -103,6 +102,21 @@ public class PersonTest {
     }
     
     @Test
+    public void TestGetId() {
+        Assertions.assertEquals(underTest1.getId(), 0);
+        Assertions.assertEquals(underTest2.getId(), 0);
+    }
+    
+    @Test
+    public void TestSetId() {
+        underTest1.setId(21);
+        underTest2.setId(22);
+        Assertions.assertNotEquals(underTest1.getId(), underTest2.getId());
+        assertEquals(underTest1.getId(), 21);
+        assertEquals(underTest2.getId(), 22);
+    }
+    
+    @Test
     public void TestAddLocation() {
         List<Location> test = new ArrayList<>();
         test.add(new Location("Firenze", 43.792363, 11.246212, 10.5, "", "mediterrán"));
@@ -145,23 +159,8 @@ public class PersonTest {
     }
     
     @Test
-    public void TestGetId() {
-        Assertions.assertEquals(underTest1.getId(), 0);
-        Assertions.assertEquals(underTest2.getId(), 0);
-    }
-    
-    @Test
-    public void TestSetId() {
-        underTest1.setId(21);
-        underTest2.setId(22);
-        Assertions.assertNotEquals(underTest1.getId(), underTest2.getId());
-        assertEquals(underTest1.getId(), 21);
-        assertEquals(underTest2.getId(), 22);
-    }
-    
-    @Test
     public void TestToString() {
-        Assertions.assertEquals(underTest1.toString(), "Person{" + "name=" + "Kalányos Pirike" + "}");
+        Assertions.assertEquals(underTest1.toString(), "Kalányos Pirike");
     }
     
     @Test

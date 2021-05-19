@@ -38,7 +38,7 @@ public class Person {
     @OneToMany
     @JoinColumn(name = "person_id")
     private List<Location> locations = new ArrayList<>();
-
+    
     public int getId() {
         return id;
     }
@@ -95,6 +95,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" + "name=" + name + '}';
+        return "" + name;
     }
 }

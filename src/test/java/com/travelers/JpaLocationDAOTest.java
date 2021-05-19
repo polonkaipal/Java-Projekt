@@ -22,7 +22,7 @@ import org.mockito.MockitoAnnotations;
  * @author veres
  */
 public class JpaLocationDAOTest {
-    
+   
     @Mock
     private PersonDAO underTestPersonDAO;
     private LocationDAO underTestLocationDAO;
