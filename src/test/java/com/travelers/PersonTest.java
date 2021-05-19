@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package java_project_test;
+package com.travelers;
 
-import com.travelers.Location;
-import com.travelers.Person;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
@@ -125,35 +123,25 @@ public class PersonTest {
         test.remove(1);
         assertEquals(underTest1.getLocations(), test);
     }
-  
-    /*
-    @Test
-    public void TestGetLocationListNames() {
-        List<Location> locations = new ArrayList<>();
-        locations.add(new Location("Firenze", 43.792363, 11.246212, 10.5, "", "mediterrán"));
-        Person p = new Person("Szabó Bence", LocalDate.of(2001, 8, 14), locations);
-        Assertions.assertEquals(p.getLocationListNames(), FXCollections.observableArrayList());
-    }
-    
-    @Test
-    public void TestSetLocationListNames() {
-        underTest1.setLocationListNames(FXCollections.observableArrayList("Párizs", "Róma"));
-        underTest2.setLocationListNames(FXCollections.observableArrayList("Budapest", "Debrecen"));
-        Assertions.assertEquals(underTest1.getLocationListNames(), FXCollections.observableArrayList("Párizs", "Róma"));
-        Assertions.assertNotEquals(underTest1.getLocationListNames(), FXCollections.observableArrayList());
-        Assertions.assertEquals(underTest2.getLocationListNames(), FXCollections.observableArrayList("Budapest", "Debrecen"));
-        Assertions.assertNotEquals(underTest2.getLocationListNames(), FXCollections.observableArrayList());
-    }
     
     @Test
     public void TestConstructor() {
         List<Location> locations = new ArrayList<>();
         locations.add(new Location("Firenze", 43.792363, 11.246212, 10.5, "", "mediterrán"));
-        Person p = new Person("Kalányos Pirike", LocalDate.of(2000, 10, 24), locations, FXCollections.observableArrayList());
+        Person p = new Person("Kalányos Pirike", LocalDate.of(2000, 10, 24), locations);
         assertEquals(p.getName(), "Kalányos Pirike");
         assertEquals(p.getDateOfBirth(), LocalDate.of(2000, 10, 24));
         assertEquals(p.getLocations(), locations);
-        assertEquals(p.getLocationListNames(), FXCollections.observableArrayList());
+    }
+    
+    @Test
+    public void TestDefaultConstructor() {
+        List<Location> locations = new ArrayList<>();
+        locations.add(new Location("Firenze", 43.792363, 11.246212, 10.5, "", "mediterrán"));
+        Person p = new Person();
+        Assertions.assertNull(p.getName());
+        Assertions.assertNull(p.getDateOfBirth());
+        Assertions.assertEquals(p.getLocations(), new ArrayList<Location>());
     }
     
     @Test
@@ -170,6 +158,16 @@ public class PersonTest {
         assertEquals(underTest1.getId(), 21);
         assertEquals(underTest2.getId(), 22);
     }
-    */
+    
+    @Test
+    public void TestToString() {
+        Assertions.assertEquals(underTest1.toString(), "Person{" + "name=" + "Kalányos Pirike" + "}");
+    }
+    
+    @Test
+    public void TestRemoveAllLocation() {
+        underTest1.removeAllLocation();
+        Assertions.assertTrue(underTest1.getLocations().isEmpty());
+    }
 }
 

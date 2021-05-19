@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package java_project_test;
+package com.travelers;
 
-import com.travelers.Location;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -83,12 +82,12 @@ public class LocationTest {
     
     @Test
     public void TestSetLatitude() {
-        underTest1.setLatitude(12.123);
-        underTest2.setLatitude(32.456);
+        underTest1.setLatitude(18.123);
+        underTest2.setLatitude(36.456);
         assertNotEquals(underTest1.getLatitude(), 43.792363);
         assertNotEquals(underTest2.getLatitude(), 34.852734);
-        assertEquals(underTest1.getLatitude(), 12.123);
-        assertEquals(underTest2.getLatitude(), 32.456);
+        assertEquals(underTest1.getLatitude(), 18.123);
+        assertEquals(underTest2.getLatitude(), 36.456);
     }
     
     @Test
@@ -99,12 +98,12 @@ public class LocationTest {
     
     @Test
     public void TestSetLongitude() {
-        underTest1.setLongitude(12.123);
-        underTest2.setLongitude(32.456);
+        underTest1.setLongitude(14.123);
+        underTest2.setLongitude(35.456);
         assertNotEquals(underTest1.getLongitude(), 11.246212);
         assertNotEquals(underTest2.getLongitude(), 32.372928);
-        assertEquals(underTest1.getLongitude(), 12.123);
-        assertEquals(underTest2.getLongitude(), 32.456);
+        assertEquals(underTest1.getLongitude(), 14.123);
+        assertEquals(underTest2.getLongitude(), 35.456);
     }
     
     @Test
@@ -115,12 +114,12 @@ public class LocationTest {
     
     @Test
     public void TestSetAltitude() {
-        underTest1.setAltitude(12.123);
-        underTest2.setAltitude(32.456);
+        underTest1.setAltitude(19.123);
+        underTest2.setAltitude(33.456);
         assertNotEquals(underTest1.getAltitude(), 10.5);
         assertNotEquals(underTest2.getAltitude(), 50.456);
-        assertEquals(underTest1.getAltitude(), 12.123);
-        assertEquals(underTest2.getAltitude(), 32.456);
+        assertEquals(underTest1.getAltitude(), 19.123);
+        assertEquals(underTest2.getAltitude(), 33.456);
     }
     
     @Test
@@ -155,7 +154,6 @@ public class LocationTest {
         assertEquals(underTest2.getDetails(), "mediterrán");
     }
 
-    
     @Test
     public void TestConstructor() {
         Location testLoc = new Location("Firenze", 43.792363, 11.246212, 10.5, "kepFirenze", "zivataros");
@@ -166,5 +164,35 @@ public class LocationTest {
         assertEquals(testLoc.getAltitude(), 10.5);
         assertEquals(testLoc.getImg(), "kepFirenze");
         assertEquals(testLoc.getDetails(), "zivataros");
+    }
+    
+    @Test
+    public void TestDefaultConstructor() {
+        Location testLoc = new Location();
+        Assertions.assertNull(testLoc.getName());
+        Assertions.assertEquals(testLoc.getLatitude(), 0.0);
+        Assertions.assertEquals(testLoc.getLongitude(), 0.0);
+        Assertions.assertEquals(testLoc.getAltitude(), 0.0);
+    }
+    
+    @Test
+    public void TestEquals() {
+        Location loc1 = new Location("Firenze", 43.792363, 11.246212, 11.5, "kepFirenze", "zivataros");
+        Location loc2 = new Location("Firenze", 43.792363, 11.246212, 10.5, "kepFirenze", "zivataros");
+        Location loc3 = new Location("Firenze", 43.792363, 12.246212, 10.5, "kepFirenze", "zivataros");
+        Location loc4 = new Location("Amsterdam", 43.792363, 12.246212, 10.5, "kepFirenze", "zivataros");
+        assertFalse(underTest1.equals(underTest2));
+        assertFalse(underTest1.equals(underTest2.getName()));
+        assertFalse(underTest1.equals(null));
+        assertTrue(underTest1.equals(underTest1));
+        assertFalse(loc1.equals(loc2));
+        assertFalse(loc1.equals(loc3));
+        assertFalse(loc3.equals(loc4));
+    }
+    
+    @Test
+    public void TestToString() {
+        Assertions.assertEquals(underTest1.toString(), "Location{" + "name=" + "Firenze" + "}");
+        Assertions.assertEquals(underTest2.toString(), "Location{" + "name=" + "Paphos" + "}");
     }
 }
