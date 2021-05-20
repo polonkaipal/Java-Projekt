@@ -38,7 +38,7 @@ public class FXMLController implements Initializable {
     private ListView<Person> personListView;
 
     @FXML
-    private ListView<String> locationListView;
+    private ListView<Location> locationListView;
 
     @FXML
     private ImageView personImage;
@@ -146,6 +146,11 @@ public class FXMLController implements Initializable {
         
         personListView.refresh();
         
+        Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
+        ListView<Location> locationNames = new ListView<>();
+        locationNames.getItems().addAll(chosenPerson.getLocations());
+        locationListView.setItems(locationNames.getItems());
+        
         //újranyithatóság engedélyezése
         stageLoadedAddPersonAndLocation = false;
     }
@@ -207,6 +212,13 @@ public class FXMLController implements Initializable {
             }
             personDAO.getPersons().get(chosenPersonIndex).removeLocation(delLocation);
             personListView.refresh();
+            
+            favoritePlaceOutput.setText("...");
+            dateOfBirthOutput.setText("...");
+            latitudeOutput.setText("...");
+            longitudeOutput.setText("...");
+            altitudeOutput.setText("...");
+            personImage.setImage(null);
         }
     }
 
@@ -329,6 +341,9 @@ public class FXMLController implements Initializable {
         personListView.refresh();
 
         //Adatok kiírása a fő lapon
+        ListView<Location> locationNames = new ListView<>();
+        locationNames.getItems().addAll(chosenPerson.getLocations());
+        locationListView.setItems(locationNames.getItems());
         favoritePlaceOutput.setText(location.getName());
         latitudeOutput.setText(String.valueOf(location.getLatitude()));
         longitudeOutput.setText(String.valueOf(location.getLongitude()));
@@ -397,11 +412,9 @@ public class FXMLController implements Initializable {
         //Ha a listview nem üres és ki van jelölve egy személy
         if (!personListView.getItems().isEmpty() && chosenPerson != null) {
             dateOfBirthOutput.setText(chosenPerson.getDateOfBirth().toString());
-            ObservableList<String> locationNames = FXCollections.observableArrayList();
-            for (Location l : chosenPerson.getLocations()) {
-                locationNames.add(l.getName());
-            }
-            locationListView.setItems(locationNames);
+            ListView<Location> locationNames = new ListView<>();
+            locationNames.getItems().addAll(chosenPerson.getLocations());
+            locationListView.setItems(locationNames.getItems());
         }
     }
     
