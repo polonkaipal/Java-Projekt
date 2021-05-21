@@ -6,6 +6,7 @@
 package com.travelers;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -119,11 +121,14 @@ public class PersonAddSceneFXMLController implements Initializable {
         fileSelected.setText("");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Image File");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files",
-                        "*.bmp", "*.png", "*.jpg", "*.gif")); // limit fileChooser options to image files
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image File", "*.jpg"));
         File selectedFile = fileChooser.showOpenDialog(fileSelected.getScene().getWindow());
-
+        
+        if (selectedFile.length() > 10000000) {
+            JOptionPane.showMessageDialog(null, "Max. size 10 MB");
+            selectedFile = null;
+        }
+        
         if (selectedFile != null) {
 
             fileName = selectedFile.toURI().toURL().toString();
@@ -149,7 +154,7 @@ public class PersonAddSceneFXMLController implements Initializable {
     private Label errorText;
 
     @FXML
-    void addPersonSavebtnPressed(ActionEvent event) {
+    void addPersonSavebtnPressed(ActionEvent event) throws IOException {
         FXMLController controller = Datas.fxmlController;
         switch (whichButtonPushed) {
             //Ha a program alapértelmezetten fut le, azaz új személyt adunk az adatbázishoz
@@ -210,6 +215,7 @@ public class PersonAddSceneFXMLController implements Initializable {
                     controller.editLocation(favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
                     Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
                     stage.close();
+                    
                 }
             }
             break;
