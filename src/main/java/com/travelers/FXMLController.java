@@ -1,5 +1,6 @@
 package com.travelers;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -57,7 +58,7 @@ public class FXMLController implements Initializable {
     private Label altitudeOutput;
     
     @FXML
-    void PersonAdder(String name, LocalDate date, String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) {
+    void PersonAdder(String name, LocalDate date, String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) throws IOException {
         
         if (img == null) img = "";
 
@@ -77,7 +78,7 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    void deletePerson(ActionEvent event) {
+    void deletePerson(ActionEvent event) throws IOException {
         Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
 
         //ha a személy lista nem üres, és ki lett választva a személy
@@ -90,6 +91,8 @@ public class FXMLController implements Initializable {
             for (Location loc: locList) {
                 if (chosenPerson.getLocations().indexOf(loc) != -1) {
                     locDAO.deleteLocation(loc);
+                    File img = new File(loc.getImg()); 
+                    img.delete();
                 }
             }
             //kitörli a kiválasztott személyt
@@ -130,7 +133,7 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    void LocationAdder(String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) {
+    void LocationAdder(String favoritePlace, double latitude, double longitude, double altitude, String img, String textArea) throws IOException {
         
         if (img == null) img = "";
         //Location létrehozása
@@ -191,7 +194,7 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    void deleteLocationClicked(ActionEvent event) {
+    void deleteLocationClicked(ActionEvent event) throws IOException {
         Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
         Location delLocation = chosenPerson.getLocations().get(locationListView.getSelectionModel().getSelectedIndex());
 
@@ -206,6 +209,8 @@ public class FXMLController implements Initializable {
             for (Location loc: locList) {
                 if (loc.getId() == delLocation.getId()) {
                     locDAO.deleteLocation(loc);
+                    File img = new File(loc.getImg()); 
+                    img.delete();
                 }
             }
             personDAO.getPersons().get(chosenPersonIndex).removeLocation(delLocation);
@@ -286,7 +291,7 @@ public class FXMLController implements Initializable {
                 addLocationController.editLocation(chosenPerson.getName(), chosenPerson.getDateOfBirth(),
                                                    chosenPersonLocation.getName(), chosenPersonLocation.getLatitude(),
                                                    chosenPersonLocation.getLongitude(), chosenPersonLocation.getAltitude(),
-                                                   chosenPersonLocation.getImg(), chosenPersonLocation.getDetails());
+                                                   "file:"+chosenPersonLocation.getImg(), chosenPersonLocation.getDetails());
 
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root1));
@@ -306,7 +311,7 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    void editLocation(String favoriePlace, double latitude, double longitude, double altitude, String img, String details) {
+    void editLocation(String favoriePlace, double latitude, double longitude, double altitude, String img, String details) throws IOException {
         Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
         Location chosenLocation = chosenPerson.getLocations().get(locationListView.getSelectionModel().getSelectedIndex());
         
@@ -417,7 +422,7 @@ public class FXMLController implements Initializable {
     }
     
     @FXML
-    void locationListViewHandleClick(MouseEvent event) {
+    void locationListViewHandleClick(MouseEvent event) throws IOException {
         //minden locationListView kattintásnál a kép üres alapértelmezetten, ha a felhasználó töltött fel képet, akkor a program később betölti
         personImage.setImage(null);
         Person chosenPerson = personListView.getSelectionModel().getSelectedItem();
@@ -433,7 +438,7 @@ public class FXMLController implements Initializable {
             //kép betöltése
             String img = chosenLocation.getImg();
             if (!img.isEmpty()) {
-                Image image = new Image(img);
+                Image image = new Image("file:" + img);
                 personImage.setImage(image);
             } else {
                 personImage.setImage(null);

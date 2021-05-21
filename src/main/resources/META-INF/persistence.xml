@@ -5,7 +5,7 @@
              version="2.0">
 
     <persistence-unit name="br.com.fredericci.pu">
-        <description>Hibernate EntityManager Demo</description>
+        <description>Travelers Datas</description>
         <class>com.travelers.Location</class>
         <class>com.travelers.Person</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
@@ -13,9 +13,9 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:~/db_Travelers"/>
-            <property name="javax.persistence.jdbc.user" value="sa"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./data/db_Travelers"/>
+            <property name="javax.persistence.jdbc.user" value="travelers"/>
+            <property name="javax.persistence.jdbc.password" value="jpg"/>
         </properties>
     </persistence-unit>
 

@@ -74,13 +74,14 @@
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="282.0" prefWidth="286.0">
                                        <children>
-                                          <Button fx:id="uploadImagebtn" layoutX="83.0" layoutY="268.0" mnemonicParsing="false" onAction="#uploadImageBtnClicked" prefHeight="35.0" prefWidth="118.0" text="Upload Image" />
-                                          <ImageView fx:id="addPersonImage" fitHeight="214.0" fitWidth="247.0" layoutX="19.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Button fx:id="uploadImagebtn" layoutX="84.0" layoutY="249.0" mnemonicParsing="false" onAction="#uploadImageBtnClicked" prefHeight="35.0" prefWidth="118.0" text="Upload Image" />
+                                          <ImageView fx:id="addPersonImage" fitHeight="214.0" fitWidth="247.0" layoutX="19.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
                                           <Label fx:id="fileSelected" alignment="CENTER" layoutX="-1.0" layoutY="5.0" prefHeight="26.0" prefWidth="286.0" textFill="#d43f3f">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
+                                          <Label layoutX="71.0" layoutY="290.0" prefHeight="25.0" prefWidth="142.0" text="Max size 10 MB, type: .jpg" textAlignment="CENTER" />
                                        </children></AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>

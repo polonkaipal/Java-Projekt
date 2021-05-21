@@ -5,7 +5,13 @@
  */
 package com.travelers;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
+import javax.imageio.ImageIO;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,11 +43,24 @@ public class Location {
     @Column(name = "altitude", nullable = false, unique = false)
     private double altitude;
 
-    @Column(name = "img", nullable = true, unique = false)
-    private String img;
+    @Column(name = "img")
+    private byte[] img;
 
     @Column(name = "details", nullable = true, unique = false)
     private String details;
+    
+    private void ImagetoByteArray(String img) throws IOException {
+        BufferedImage bImage = ImageIO.read(new File(img));
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(bImage, "jpg", bos );
+        this.img = bos.toByteArray();
+    }
+    
+    private void ByteArrayToImage(byte[] data) throws IOException {
+        ByteArrayInputStream bis = new ByteArrayInputStream(data);
+        BufferedImage bImage2 = ImageIO.read(bis);
+        ImageIO.write(bImage2, "jpg", new File("./data/pictures/kepID" + this.id + ".jpg"));
+    }
 
     public int getId() {
         return id;
@@ -83,12 +102,23 @@ public class Location {
         this.altitude = altitude;
     }
 
-    public String getImg() {
-        return img;
+    public String getImg() throws IOException {
+        if (this.img != null) {
+            ByteArrayToImage(this.img);
+            return "./data/pictures/kepID" + this.id + ".jpg";
+        } else {
+            return "";
+        }
+        
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setImg(String img) throws IOException {
+        if (img != "") {
+            ImagetoByteArray(img.replaceFirst("file:/", ""));
+        } else {
+            this.img = null;
+        }
+        
     }
 
     public String getDetails() {
@@ -103,12 +133,16 @@ public class Location {
 
     }
 
-    public Location(String name, double latitude, double longitude, double altitude, String img, String details) {
+    public Location(String name, double latitude, double longitude, double altitude, String img, String details) throws IOException {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
-        this.img = img;
+        if (img != "") {
+            ImagetoByteArray(img.replaceFirst("file:/", ""));
+        } else {
+            this.img = null;
+        }
         this.details = details;
     }
 
