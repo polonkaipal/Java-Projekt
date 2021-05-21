@@ -330,8 +330,6 @@ public class FXMLController implements Initializable {
         }
         
         Location location = new Location(favoriePlace, latitude, longitude, altitude, img, details);
-        //chosenPerson.getLocations().getItems().remove(chosenPersonLocation);
-        //chosenPerson.getLocations().getItems().add(location);
         int chosenPersonIndex = personListView.getSelectionModel().getSelectedIndex();
         int chosenLocationIndex = locationListView.getSelectionModel().getSelectedIndex();
         personDAO.getPersons().get(chosenPersonIndex).getLocations().get(chosenLocationIndex).setName(favoriePlace);

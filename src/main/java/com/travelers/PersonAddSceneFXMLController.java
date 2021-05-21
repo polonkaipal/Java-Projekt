@@ -123,7 +123,6 @@ public class PersonAddSceneFXMLController implements Initializable {
         fileChooser.setTitle("Select Image File");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image File", "*.jpg"));
         File selectedFile = fileChooser.showOpenDialog(fileSelected.getScene().getWindow());
-        System.out.println(selectedFile.length());
         
         if (selectedFile.length() > 10000000) {
             JOptionPane.showMessageDialog(null, "Max. size 10 MB");
@@ -216,6 +215,7 @@ public class PersonAddSceneFXMLController implements Initializable {
                     controller.editLocation(favoritePlaceInput.getText(), Double.parseDouble(latitudeInput.getText()), Double.parseDouble(longitudeInput.getText()), Double.parseDouble(altitudeInput.getText()), fileName, addPersonDetailsIn.getText());
                     Stage stage = (Stage) addPersonSavebtn.getScene().getWindow();
                     stage.close();
+                    
                 }
             }
             break;

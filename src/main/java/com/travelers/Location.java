@@ -114,7 +114,7 @@ public class Location {
 
     public void setImg(String img) throws IOException {
         if (img != "") {
-            ImagetoByteArray(img.replaceFirst("file:/", ""));
+            ImagetoByteArray(img.replaceFirst("file:", ""));
         } else {
             this.img = null;
         }
@@ -139,7 +139,7 @@ public class Location {
         this.longitude = longitude;
         this.altitude = altitude;
         if (img != "") {
-            ImagetoByteArray(img.replaceFirst("file:/", ""));
+            ImagetoByteArray(img.replaceFirst("file:", ""));
         } else {
             this.img = null;
         }
